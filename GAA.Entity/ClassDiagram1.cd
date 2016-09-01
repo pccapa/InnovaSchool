@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GAA.Entity.Apoderado">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAASBAAACwQAACkAAgAgAgAAAAIBAAAAAwAAgAAAEI=</HashCode>
+      <FileName>Apoderado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.CitaAdmision" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAIAAAkCAAAAAIAAAAAAAgAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>CitaAdmision.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.Ciudad" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAQAAQAAAAEAAEAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cuidad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.Departamento" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAEIAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Departamento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.Genero" Collapsed="true">
+    <Position X="4" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAABAAAgAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Genero.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.Grado" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAIAAAACAAAA=</HashCode>
+      <FileName>Grado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.Postulante">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAQAAACEBAgAgAYAAAACBEABAAxAARAAAAA=</HashCode>
+      <FileName>Postulante.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.SolicitudAdmision" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAEAAAABAAAEAAAABAAAAAAAQAAAAEAAAAAAAAg=</HashCode>
+      <FileName>SolicitudAdmision.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.Sucursal" Collapsed="true">
+    <Position X="5.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAEAEAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sucursal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.TipoDocumento">
+    <Position X="2.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAABACAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>TipoDocumento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAA.Entity.VinculoApoderado" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAIAAAAAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VinculoApoderado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

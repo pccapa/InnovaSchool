@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="GAA.Entity"
+                   namespace="GAA.Entity"
+                   default-lazy="false">
+	<class name="CitaAdmision" table="GAA_CitaAdmision">
+		<id name="IdCitaAdmision" column="idCitaAdmision">
+			<generator class="increment" />
+		</id>
+		<many-to-one name="SolicitudAdmision" column="idSolicitudAdmision" />    
+    <property name="FechaCita" column="fechaCita" />
+    <property name="NumeroIntento" column="numeroIntento" />
+
+
+  </class>
+</hibernate-mapping>

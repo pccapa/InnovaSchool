@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="GAA.Entity"
+                   namespace="GAA.Entity"
+                   default-lazy="false">
+	<class name="Sucursal" table="GAA_Sucursal">
+		<id name="IdSucursal" column="idSucursal">
+			<generator class="increment" />
+		</id>
+    <many-to-one name="Ciudad" column="idCiudad" />
+    <property name="Descripcion" column="descripcion" />
+
+
+  </class>
+</hibernate-mapping>

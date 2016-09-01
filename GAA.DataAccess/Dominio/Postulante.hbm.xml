@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="GAA.Entity"
+                   namespace="GAA.Entity"
+                   default-lazy="false">
+	<class name="Postulante" table="GAA_Postulante">
+		<id name="IdPostulante" column="idPostulante">
+			<generator class="increment" />
+		</id>
+		<many-to-one name="Apoderado" column="idApoderado" />
+		<many-to-one name="Genero" column="idGenero" />
+		<many-to-one name="TipoDocumento" column="idTipoDocumento" />		
+		<property name="Nombre" column="nombre" />
+		<property name="Apellido" column="apellido" />
+		<property name="NumeroDocumento" column="numeroDocumento" />
+		<property name="FechaNacimiento" column="fechaNacimiento" />
+		<property name="LugarNacimiento" column="lugarNacimiento" />
+	</class>
+</hibernate-mapping>

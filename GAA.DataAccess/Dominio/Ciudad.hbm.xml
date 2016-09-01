@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="GAA.Entity"
+                   namespace="GAA.Entity"
+                   default-lazy="false">
+	<class name="Ciudad" table="GAA_Ciudad">
+		<id name="IdCiudad" column="idCiudad">
+			<generator class="increment" />
+		</id>
+		<bag name="Sucursal" lazy="false" >
+			<key column="IdCiudad"></key>
+			<one-to-many class="Sucursal"></one-to-many>
+		</bag>
+		<many-to-one name="Departamento" column="idDepartamento" />
+		<property name="Descripcion" column="descripcion" />
+	</class>
+</hibernate-mapping>
