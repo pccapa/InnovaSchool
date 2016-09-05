@@ -50,6 +50,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistencia\BaseDAO.cs" />
+    <Compile Include="Persistencia\EstadoCitaDAO.cs" />
     <Compile Include="Persistencia\CiudadDAO.cs" />
     <Compile Include="Persistencia\ConexionUtil.cs" />
     <Compile Include="Persistencia\DepartamentoDAO.cs">
@@ -71,6 +72,7 @@
     <Compile Include="Persistencia\SucursalDAO.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistencia\CitaAdmisionDAO.cs" />
     <Compile Include="Persistencia\TipoDocumentoDAO.cs" />
     <Compile Include="Persistencia\VinculoApoderadoDAO.cs">
       <SubType>Code</SubType>
@@ -99,6 +101,9 @@
     <EmbeddedResource Include="Dominio\SolicitudAdmision.hbm.xml" />
     <EmbeddedResource Include="Dominio\Sucursal.hbm.xml" />
     <EmbeddedResource Include="Dominio\VinculoApoderado.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dominio\EstadoCita.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

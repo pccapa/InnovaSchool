@@ -42,6 +42,7 @@
     <Compile Include="BCiudad.cs" />
     <Compile Include="BPostulante.cs" />
     <Compile Include="BApoderado.cs" />
+    <Compile Include="BCitaAdmision.cs" />
     <Compile Include="BSolicitudAdmision.cs" />
     <Compile Include="BGenero.cs" />
     <Compile Include="BVinculoApoderado.cs" />

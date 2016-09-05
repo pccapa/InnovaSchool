@@ -114,12 +114,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\DetalleSolicitudController.cs" />
-    <Compile Include="Controllers\SolicitudAdmisionController.cs" />
+    <Compile Include="Controllers\GestionAdmisionController.cs" />
+    <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\GestionAdmisionViewModel.cs" />
     <Compile Include="ViewModels\SolicitudAdmisionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +130,7 @@
     <Content Include="Content\bootstrap-reset.css" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap-select.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\chosen.css" />
@@ -184,6 +186,7 @@
     <Content Include="Images\close-button-white.png" />
     <Content Include="Images\close-button.png" />
     <Content Include="Images\crop.gif" />
+    <Content Include="Images\delete.png" />
     <Content Include="Images\dialogs.png" />
     <Content Include="Images\favicon.png" />
     <Content Include="Images\glyphicons-halflings-white.png" />
@@ -208,6 +211,7 @@
     <Content Include="Images\logo\innova_schools-logo.png" />
     <Content Include="Images\logo\innova_schools.png" />
     <Content Include="Images\logo\logo.png" />
+    <Content Include="Images\modify.png" />
     <Content Include="Images\progress.gif" />
     <Content Include="Images\quicklook-bg.png" />
     <Content Include="Images\quicklook-icons.png" />
@@ -238,6 +242,7 @@
     <Content Include="Images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Images\uploadify-cancel.png" />
     <Content Include="Images\web.png" />
+    <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -289,9 +294,10 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\SolicitudAdmision\CreateSolicitud.cshtml" />
     <Content Include="Views\_Layout.cshtml" />
-    <Content Include="Views\DetalleSolicitud\DetalleSolicitud.cshtml" />
+    <Content Include="Views\Principal\Index.cshtml" />
+    <Content Include="Views\GestionAdmision\Consulta.cshtml" />
+    <Content Include="Views\GestionAdmision\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

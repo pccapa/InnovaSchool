@@ -9,8 +9,9 @@
 		</id>
 		<many-to-one name="Apoderado" column="idApoderado" />
 		<many-to-one name="Genero" column="idGenero" />
-		<many-to-one name="TipoDocumento" column="idTipoDocumento" />		
-		<property name="Nombre" column="nombre" />
+		<many-to-one name="TipoDocumento" column="idTipoDocumento" />
+    <many-to-one name="Ciudad" column="idCiudad" />
+    <property name="Nombre" column="nombre" />
 		<property name="Apellido" column="apellido" />
 		<property name="NumeroDocumento" column="numeroDocumento" />
 		<property name="FechaNacimiento" column="fechaNacimiento" />

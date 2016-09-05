@@ -20,14 +20,7 @@ namespace GAA.Entity
         {
             get { return tipoDocumento; }
             set { tipoDocumento = value; }
-        }
-        private Ciudad ciudad;
-
-        public Ciudad Ciudad
-        {
-            get { return ciudad; }
-            set { ciudad = value; }
-        }
+        }        
         private VinculoApoderado vinculoApoderado;
 
         public VinculoApoderado VinculoApoderado

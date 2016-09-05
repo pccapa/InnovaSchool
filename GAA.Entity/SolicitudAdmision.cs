@@ -43,12 +43,14 @@ namespace GAA.Entity
             get { return fechaSolicitud; }
             set { fechaSolicitud = value; }
         }
-        private string estado;
 
-        public string Estado
+        public string Fecha
         {
-            get { return estado; }
-            set { estado = value; }
+            get { return fechaSolicitud.ToString("dd/MM/yyyy") ; }            
+        }
+        public string Hora
+        {
+            get { return fechaSolicitud.ToString("HH:mm:ss"); }
         }
     }
 }

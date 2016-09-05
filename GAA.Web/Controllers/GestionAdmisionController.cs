@@ -3,28 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using GAA.Entity;
 using GAA.Business;
+using GAA.Entity;
 
 namespace GAA.Web.Controllers
 {
-    public class SolicitudAdmisionController : Controller
-    {       
-
-        public ActionResult CreateSolicitud()
-        {            
-            PopulateDropDownList();
-            return View();
+    public class GestionAdmisionController : Controller
+    {
+        public ActionResult Consulta()
+        {
+            BCitaAdmision objAdmision = new BCitaAdmision();
+            List<CitaAdmision> listAdmision = objAdmision.ListarTodo();
+            //ViewBag.ListaAdmision = listAdmision;
+            return View(listAdmision);
         }
 
         [HttpPost]
-        public ActionResult CreateSolicitud(FormCollection collection)
-        {            
+        public ActionResult Create(FormCollection collection)
+        {
             try
             {
                 BSolicitudAdmision objSolicitud = new BSolicitudAdmision();
                 BApoderado objApoderado = new BApoderado();
                 BPostulante objPostulante = new BPostulante();
+                BCitaAdmision objCita = new BCitaAdmision();
 
                 Apoderado apoderado = new Apoderado()
                 {
@@ -36,7 +38,6 @@ namespace GAA.Web.Controllers
                     Ocupacion = collection["OcupacionApoderado"],
                     Email = collection["EmailApoderado"],
                     Telefono = collection["TelefonoApoderado"],
-                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudadApoderado"]) },
                     Direccion = collection["DireccionApoderado"]
                 };
 
@@ -49,7 +50,8 @@ namespace GAA.Web.Controllers
                     NumeroDocumento = Convert.ToInt32(collection["NumDocumentoPostulante"]),
                     FechaNacimiento = Convert.ToDateTime(collection["FechaNacimientoPostulante"]),
                     LugarNacimiento = collection["LugarNacimiento"],
-                    Apoderado=apoderado
+                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudadApoderado"]) },
+                    Apoderado = apoderado
                 };
 
                 SolicitudAdmision solicitud = new SolicitudAdmision()
@@ -57,27 +59,38 @@ namespace GAA.Web.Controllers
                     Postulante = postulante,
                     Grado = new Grado() { IdGrado = Convert.ToInt32(collection["CodGrado"]) },
                     Sucursal = new Sucursal() { IdSucursal = Convert.ToInt32(collection["CodSucursal"]) },
-                    FechaSolicitud = DateTime.Now,
-                    Estado = "Pendiente"
+                    FechaSolicitud = DateTime.Now
                 };
+
+                CitaAdmision cita = new CitaAdmision()
+                {
+                    SolicitudAdmision = solicitud,
+                    EstadoCita = new EstadoCita() { IdEstadoCita = 1 },///verificar esto
+                    FechaCita = null,
+                    NumeroIntento = 0
+                };
+
 
                 objApoderado.Crear(apoderado);
                 objPostulante.Crear(postulante);
-                SolicitudAdmision solicitudCreada = objSolicitud.Crear(solicitud);
+                objSolicitud.Crear(solicitud);
+                CitaAdmision citaCreada = objCita.Crear(cita);
 
-                var ruta = Url.Action("DetalleSolicitud", "DetalleSolicitud", new { id = solicitudCreada.IdSolicitudAdmision }, this.Request.Url.Scheme);
-                return Json(new { success = true, responseText = "Se generó la Solicitud", url = ruta }, JsonRequestBehavior.AllowGet);                
+                if (citaCreada.IdCitaAdmision > 0)
+                    return Json(new { success = true, responseText ="OK"}, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = true, responseText = "Ocurrió un incoveniente al crear la el registro" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                var ruta = Url.Action("CreateSolicitud", "SolicitudAdmision", new { id = 5 }, this.Request.Url.Scheme);
-                return Json(new { success = false, responseText = ex.Message, url = ruta }, JsonRequestBehavior.AllowGet);                
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult GetCiudad(int codDepartamento)
-        {           
+        {
             try
             {
                 BDepartamento objDeparamento = new BDepartamento();
@@ -92,43 +105,24 @@ namespace GAA.Web.Controllers
                 return Json(listaCiudad, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
-            {                
+            {
                 throw ex;
-            }          
+            }
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult GetSucursal(int codCiudad)
-        {
-            try
-            {
-                BCiudad objSucursal = new BCiudad();
-                var ciudades = objSucursal.ListarTodo().Where(x => x.IdCiudad == codCiudad).FirstOrDefault().Sucursal.ToList();
-                var listaCiudad = (from c in ciudades
-                                   select new
-                                   {
-                                       id = c.IdSucursal,
-                                       name = c.Descripcion
-                                   }).ToList();
-
-                return Json(listaCiudad, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
+        public ActionResult Eliminar(int codCitaAdmision) { 
         }
 
         private void PopulateDropDownList()
         {
             try
-            {                
+            {
                 BTipoDocumento tipoDocumento = new BTipoDocumento();
                 BGrado grado = new BGrado();
                 BSucursal sucursal = new BSucursal();
-                BDepartamento departamento= new BDepartamento();
-                BVinculoApoderado vinculo= new BVinculoApoderado();
+                BDepartamento departamento = new BDepartamento();
+                BVinculoApoderado vinculo = new BVinculoApoderado();
                 BGenero genero = new BGenero();
 
                 ViewBag.ListaTipoDocumento = new SelectList(tipoDocumento.ListarTodo(), "IdTipoDocumento", "Descripcion", 0);

@@ -10,7 +10,7 @@ namespace GAA.DataAccess.Persistencia
     {
         public static string ObtenerCadena()
         {
-            return @"Data Source=LPMETRICA23;Initial Catalog=InnovaSchool;Integrated Security=SSPI;";
+            return @"Data Source=Pablo-laptop-PC\SQLEXPRESS_R2;Initial Catalog=InnovaSchool;Integrated Security=SSPI;";
         }
     }
 }

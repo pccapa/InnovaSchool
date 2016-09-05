@@ -7,8 +7,7 @@
     <id name="IdApoderado" column="idApoderado">
       <generator class="increment" />
     </id>
-    <many-to-one name="TipoDocumento" column="idTipoDocumento" />
-    <many-to-one name="Ciudad" column="idCiudad" />
+    <many-to-one name="TipoDocumento" column="idTipoDocumento" />    
     <many-to-one name="VinculoApoderado" column="idVinculoApoderado" />
     <property name="Nombre" column="nombre" />
     <property name="Apellido" column="apellido" />

@@ -8,6 +8,7 @@
 			<generator class="increment" />
 		</id>
 		<many-to-one name="SolicitudAdmision" column="idSolicitudAdmision" />    
+    <many-to-one name="EstadoCita" column="idEstadoCita" />    
     <property name="FechaCita" column="fechaCita" />
     <property name="NumeroIntento" column="numeroIntento" />
 

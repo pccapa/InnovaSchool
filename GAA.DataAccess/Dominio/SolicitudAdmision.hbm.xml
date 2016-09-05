@@ -10,7 +10,6 @@
 		<many-to-one name="Postulante" column="idPostulante" />
 		<many-to-one name="Grado" column="idGrado" />
 		<many-to-one name="Sucursal" column="idSucursal" />
-		<property name="FechaSolicitud" column="fechaSolicitud" />
-		<property name="Estado" column="estado" />
+		<property name="FechaSolicitud" column="fechaSolicitud" />		
 	</class>
 </hibernate-mapping>

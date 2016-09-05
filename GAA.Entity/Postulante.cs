@@ -39,6 +39,14 @@ namespace GAA.Entity
             get { return tipoDocumento; }
             set { tipoDocumento = value; }
         }
+
+        private Ciudad ciudad;
+
+        public Ciudad Ciudad
+        {
+            get { return ciudad; }
+            set { ciudad = value; }
+        }
        
         private string nombre;
 
@@ -68,7 +76,7 @@ namespace GAA.Entity
             get { return fechaNacimiento; }
             set { fechaNacimiento = value; }
         }
-        private string lugarNacimiento;
+        private string lugarNacimiento;                
 
         public string LugarNacimiento
         {

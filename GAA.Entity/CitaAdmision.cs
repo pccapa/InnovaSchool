@@ -22,9 +22,16 @@ namespace GAA.Entity
             get { return solicitudAdmision; }
             set { solicitudAdmision = value; }
         }
-        private DateTime fechaCita;
+        private EstadoCita estadoCita;
 
-        public DateTime FechaCita
+        public EstadoCita EstadoCita
+        {
+            get { return estadoCita; }
+            set { estadoCita = value; }
+        }
+        private DateTime? fechaCita;
+
+        public DateTime? FechaCita
         {
             get { return fechaCita; }
             set { fechaCita = value; }
