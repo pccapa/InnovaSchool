@@ -121,7 +121,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\GestionAdmisionViewModel.cs" />
-    <Compile Include="ViewModels\SolicitudAdmisionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -298,6 +297,7 @@
     <Content Include="Views\Principal\Index.cshtml" />
     <Content Include="Views\GestionAdmision\Consulta.cshtml" />
     <Content Include="Views\GestionAdmision\Create.cshtml" />
+    <Content Include="Views\GestionAdmision\Modify.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

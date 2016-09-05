@@ -47,5 +47,17 @@ namespace GAA.Business
             }
         }
 
+        public Apoderado Modificar(Apoderado apoderadoAModificar)
+        {
+            try
+            {
+                return ApoderadoDAO.Modificar(apoderadoAModificar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

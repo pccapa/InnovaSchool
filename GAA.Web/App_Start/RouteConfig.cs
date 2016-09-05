@@ -17,7 +17,7 @@ namespace GAA.Web
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 //defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-                defaults: new { controller = "SolicitudAdmision", action = "CreateSolicitud", id = UrlParameter.Optional }
+                defaults: new { controller = "Principal", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

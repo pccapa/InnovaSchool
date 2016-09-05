@@ -47,5 +47,17 @@ namespace GAA.Business
             }
         }
 
+        public SolicitudAdmision Modificar(SolicitudAdmision solicitudAmodificar)
+        {
+            try
+            {
+                return SolicitudAdmisionDAO.Modificar(solicitudAmodificar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

@@ -47,5 +47,17 @@ namespace GAA.Business
             }
         }
 
+        public Postulante Modificar(Postulante postulanteAmodificar)
+        {
+            try
+            {
+                return PostulanteDAO.Modificar(postulanteAmodificar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
