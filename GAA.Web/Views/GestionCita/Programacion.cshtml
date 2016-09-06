@@ -1,0 +1,81 @@
+﻿@model GAA.Web.ViewModels.GestionAdmisionViewModel
+
+@{
+    ViewBag.Title = "Citas";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "onlineform" }))
+{
+    @Html.AntiForgeryToken()
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+
+
+        });
+
+
+
+    </script>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <fieldset>
+        <div class="panel panel-primary" style="width:100%">
+            <div class="panel-heading">Programar Citas</div>
+            <div class="panel-body">
+                <table class="table-bordered" width="100%">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.CodCitaAdmision, "Código: ", htmlAttributes: new { @class = "control-label" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.NombresPostulante, "Postulante: ", htmlAttributes: new { @class = "control-label" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.GradoDescripcion, "Grado: ", htmlAttributes: new { @class = "control-label" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.SucursalDescripcion, "Sucursal: ", htmlAttributes: new { @class = "control-label" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            @Html.LabelFor(model => model.EstadoDescripcion, "Estado: ", htmlAttributes: new { @class = "control-label" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-body">
+                <table class="table-bordered" width="100%">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.FechaCitaAdmision, "Fecha Cita: ", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.FechaCitaAdmision, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FechaCitaAdmision, "", new { @class = "text-danger" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(model => model.HoraCitaAdmision, "Hora Cita: ", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.HoraCitaAdmision, "{0:HH:mm}", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HoraCitaAdmision, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <b>(*) Campos Obligatorios</b>
+            <br />
+            <div class="btn-group">
+                <input type="button" value="Registrar Cita" id="btnRegistrar" class="btn-primary" />
+                <input type="button" value="Cancelar Cita" id="btnCancelarCita" class="btn-primary" />
+                <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
+            </div>
+        </div>
+
+    </fieldset>
+}

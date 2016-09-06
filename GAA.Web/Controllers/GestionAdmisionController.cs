@@ -18,6 +18,7 @@ namespace GAA.Web.Controllers
             List<CitaAdmision> listAdmision = objAdmision.ListarTodo();
             return View(listAdmision);
         }
+
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Eliminar(int codCitaAdmision)
         {
@@ -41,7 +42,7 @@ namespace GAA.Web.Controllers
         #endregion
 
         #region Crear
-        private void PopulateDropDownList()
+        private void PopulateDropDownList(int codDepartamento=0)
         {
             try
             {
@@ -51,6 +52,7 @@ namespace GAA.Web.Controllers
                 BDepartamento departamento = new BDepartamento();
                 BVinculoApoderado vinculo = new BVinculoApoderado();
                 BGenero genero = new BGenero();
+                BCiudad ciudad = new BCiudad();
 
                 ViewBag.ListaTipoDocumento = new SelectList(tipoDocumento.ListarTodo(), "IdTipoDocumento", "Descripcion", 0);
                 ViewBag.ListaGrado = new SelectList(grado.ListarTodo(), "IdGrado", "Descripcion", 0);
@@ -58,6 +60,10 @@ namespace GAA.Web.Controllers
                 ViewBag.ListaDepartamento = new SelectList(departamento.ListarTodo(), "IdDepartamento", "Descripcion", 0);
                 ViewBag.ListaApoderadoVinculo = new SelectList(vinculo.ListarTodo(), "idVinculoApoderado", "Descripcion", 0);
                 ViewBag.ListaGenero = new SelectList(genero.ListarTodo(), "IdGenero", "Descripcion", 0);
+                if( codDepartamento>0 )
+                    ViewBag.ListaCiudad = new SelectList(ciudad.ListarTodo().Where(x=>x.Departamento.IdDepartamento==codDepartamento).ToList() , "IdCiudad", "Descripcion", 0);
+                else
+                    ViewBag.ListaCiudad = new SelectList(Enumerable.Empty<SelectListItem>(), "IdCiudad", "Descripcion", 0);
             }
             catch (Exception ex)
             {
@@ -85,7 +91,7 @@ namespace GAA.Web.Controllers
                 {
                     Nombre = collection["NombresApoderado"],
                     Apellido = collection["ApellidosApoderado"],
-                    VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["IdVinculoApoderado"]) },
+                    VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
                     NumeroDocumento = Convert.ToInt32(collection["NumDocumentoApoderado"]),
                     Ocupacion = collection["OcupacionApoderado"],
@@ -97,13 +103,13 @@ namespace GAA.Web.Controllers
                 Postulante postulante = new Postulante()
                 {
                     Nombre = collection["NombresPostulante"],
-                    Apellido = collection["ApellidoPostulante"],
+                    Apellido = collection["ApellidosPostulante"],
                     Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
                     NumeroDocumento = Convert.ToInt32(collection["NumDocumentoPostulante"]),
                     FechaNacimiento = Convert.ToDateTime(collection["FechaNacimientoPostulante"]),
-                    LugarNacimiento = collection["LugarNacimiento"],
-                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudadApoderado"]) },
+                    LugarNacimiento = collection["LugarNacimientoPostulante"],
+                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
                     Apoderado = apoderado
                 };
 
@@ -164,16 +170,15 @@ namespace GAA.Web.Controllers
         }
         #endregion
 
-
         #region Modificar
-        public ActionResult Modify(int idCitaAdmision)
+        public ActionResult Modify(int id)
         {
             try
             {
                 BCitaAdmision objCitaAdmision = new BCitaAdmision();
                 CitaAdmision cita = new CitaAdmision();
                 GestionAdmisionViewModel viewModel = new GestionAdmisionViewModel();
-                cita = objCitaAdmision.ListarTodo().Where(x => x.IdCitaAdmision == idCitaAdmision).FirstOrDefault();
+                cita = objCitaAdmision.ListarTodo().Where(x => x.IdCitaAdmision == id).FirstOrDefault();
                 viewModel.CodApoderado = cita.SolicitudAdmision.Postulante.Apoderado.IdApoderado;
                 viewModel.CodTipoDocumentoApoderado = cita.SolicitudAdmision.Postulante.Apoderado.TipoDocumento.IdTipoDocumento;
                 viewModel.CodVinculo = cita.SolicitudAdmision.Postulante.Apoderado.VinculoApoderado.IdVinculoApoderado;
@@ -186,6 +191,7 @@ namespace GAA.Web.Controllers
                 viewModel.DireccionApoderado = cita.SolicitudAdmision.Postulante.Apoderado.Direccion;
 
                 viewModel.CodPostulante = cita.SolicitudAdmision.Postulante.IdPostulante;
+                viewModel.CodDepartamento = cita.SolicitudAdmision.Postulante.Ciudad.Departamento.IdDepartamento;
                 viewModel.CodCiudad = cita.SolicitudAdmision.Postulante.Ciudad.IdCiudad;
                 viewModel.CodGenero = cita.SolicitudAdmision.Postulante.Genero.IdGenero;
                 viewModel.CodTipoDocumentoPostulante = cita.SolicitudAdmision.Postulante.TipoDocumento.IdTipoDocumento;
@@ -203,7 +209,7 @@ namespace GAA.Web.Controllers
                 //viewModel.CodEstadoCita = cita.EstadoCita.IdEstadoCita;
                 //viewModel.FechaCitaAdmision = cita.FechaCita;
 
-                PopulateDropDownList();
+                PopulateDropDownList(cita.SolicitudAdmision.Postulante.Ciudad.Departamento.IdDepartamento);
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -225,9 +231,10 @@ namespace GAA.Web.Controllers
 
                 Apoderado apoderado = new Apoderado()
                 {
+                    IdApoderado=Convert.ToInt32( collection["CodApoderado"]),
                     Nombre = collection["NombresApoderado"],
                     Apellido = collection["ApellidosApoderado"],
-                    VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["IdVinculoApoderado"]) },
+                    VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
                     NumeroDocumento = Convert.ToInt32(collection["NumDocumentoApoderado"]),
                     Ocupacion = collection["OcupacionApoderado"],
@@ -238,19 +245,21 @@ namespace GAA.Web.Controllers
 
                 Postulante postulante = new Postulante()
                 {
+                    IdPostulante = Convert.ToInt32(collection["CodPostulante"]),
                     Nombre = collection["NombresPostulante"],
-                    Apellido = collection["ApellidoPostulante"],
+                    Apellido = collection["ApellidosPostulante"],
                     Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
                     NumeroDocumento = Convert.ToInt32(collection["NumDocumentoPostulante"]),
                     FechaNacimiento = Convert.ToDateTime(collection["FechaNacimientoPostulante"]),
-                    LugarNacimiento = collection["LugarNacimiento"],
-                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudadApoderado"]) },
+                    LugarNacimiento = collection["LugarNacimientoPostulante"],
+                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
                     Apoderado = apoderado
                 };
 
                 SolicitudAdmision solicitud = new SolicitudAdmision()
                 {
+                    IdSolicitudAdmision = Convert.ToInt32(collection["CodSolicitudAdmision"]),
                     Postulante = postulante,
                     Grado = new Grado() { IdGrado = Convert.ToInt32(collection["CodGrado"]) },
                     Sucursal = new Sucursal() { IdSucursal = Convert.ToInt32(collection["CodSucursal"]) },
@@ -273,7 +282,5 @@ namespace GAA.Web.Controllers
 
         }
         #endregion
-
-
     }
 }

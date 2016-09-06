@@ -1,10 +1,9 @@
 ﻿@model GAA.Web.ViewModels.GestionAdmisionViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Solicitud de Admisión";
     Layout = "~/Views/_Layout.cshtml";
 }
 
-<h2>Registrar Admisión</h2>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "onlineform" }))
 {
@@ -88,7 +87,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodTipoDocumentoApoderado, "Tipo Documento Apoderado (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodTipoDocumentoApoderado", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownList("CodTipoDocumentoApoderado", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodTipoDocumentoApoderado, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -130,7 +129,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodVinculo, "Vinculo Postulante (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodVinculo", (SelectList)ViewBag.ListaApoderadoVinculo, "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownList("CodVinculo", (SelectList)ViewBag.ListaApoderadoVinculo, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodVinculo, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -161,7 +160,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodTipoDocumentoPostulante, "Tipo Documento Postulante (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodTipoDocumentoPostulante", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownList("CodTipoDocumentoPostulante", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodTipoDocumentoPostulante, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -189,21 +188,21 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodGenero, "Genero (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodGenero", (IEnumerable<SelectListItem>)ViewBag.ListaGenero, "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownList("CodGenero", (IEnumerable<SelectListItem>)ViewBag.ListaGenero, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodGenero, "", new { @class = "text-danger" })
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodDepartamento, "Departamento (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodDepartamento", (SelectList)ViewBag.ListaDepartamento, "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownList("CodDepartamento", (SelectList)ViewBag.ListaDepartamento, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodDepartamento, "", new { @class = "text-danger" })
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodCiudad, "Ciudad (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownListFor(model => model.CodCiudad, Enumerable.Empty<SelectListItem>(), "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownListFor(model => model.CodCiudad, Enumerable.Empty<SelectListItem>(), "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodCiudad, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -220,14 +219,14 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodGrado, "Grado (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodGrado", (SelectList)ViewBag.ListaGrado, "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownList("CodGrado", (SelectList)ViewBag.ListaGrado, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodGrado, "", new { @class = "text-danger" })
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodSucursal, "Sucursal (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodSucursal", (SelectList)ViewBag.ListaSucursal, "-Seleccione-", htmlAttributes: new { @class = "selectpicker" })
+                                @Html.DropDownList("CodSucursal", (SelectList)ViewBag.ListaSucursal, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodSucursal, "", new { @class = "text-danger" })
                             </td>
                         </tr>

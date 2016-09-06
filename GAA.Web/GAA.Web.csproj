@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\GestionAdmisionController.cs" />
+    <Compile Include="Controllers\GestionCitaController.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -298,6 +299,7 @@
     <Content Include="Views\GestionAdmision\Consulta.cshtml" />
     <Content Include="Views\GestionAdmision\Create.cshtml" />
     <Content Include="Views\GestionAdmision\Modify.cshtml" />
+    <Content Include="Views\GestionCita\Programacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
