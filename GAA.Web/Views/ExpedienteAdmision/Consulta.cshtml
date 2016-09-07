@@ -1,0 +1,112 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+    ViewBag.Title = "Expediente de Admisión";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "onlineform" }))
+{
+    @Html.AntiForgeryToken()
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#btnBuscar').change(function () {
+                ListarExpedientes();
+            });
+
+
+
+            $('#btnCrearExpediente').change(function () {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "/ExpedienteAdmision/CrearExpediente",
+                    data: { "numeroDocumento": $(this).val() },
+                    success: function (response) {
+                        if (response != null && response.success && response.responseText == 'OK') {
+                            alert("Se creó el expediente satisfacoriamente");
+                            ListarExpedientes();
+                        } else {
+                            alert(response.responseText);
+                        }
+                    }
+                });
+            });
+
+
+
+            $('#btnSalir').click(function () {
+                window.location.href = '/GestionAdmision/Consulta/';
+            });
+
+
+
+
+            function ListarExpedientes() {
+                $('#tbExpedientes tbody').append('');
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "/ExpedienteAdmision/GetExpedientes",
+                    data: { "numeroDocumento": $('#txtDocumento').val() },
+                    success: function (response) {
+                        if (response != null && response.success && response.responseText == 'OK') {
+                            if (response.cadena == '')
+                                alert('No se encontró registros');
+                            else {
+                                $('#tbExpedientes tbody').append(response.cadena);
+                                HabilitarBotonRegistrarExpediente
+                            }
+                        } else {
+                            alert(response.responseText);
+                        }
+                    }
+                });
+            }
+
+
+
+            function HabilitarBotonRegistrarExpediente() { }
+
+
+
+        });
+
+
+
+
+
+    </script>
+
+    <fieldset>
+        <div class="panel panel-primary" style="width:100%">
+            <div class="panel-heading">Busqueda de Expediente de Admisión</div>
+            <div class="panel-body">
+                <br />
+                <div class="btn-group">
+                    <input type="button" value="Crear Expediente de Admisión" id="btnCrearExpediente" class="btn-primary" />
+                    <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
+                </div>
+                <p>
+                    <span class="control-label">N° de Documento de identidad del postulante</span> <br />
+                    <input type="text" id="txtDocumento" class="form-control" /><br />
+                    <input type="button" value="Buscar" id="btnBuscar" class="btn-primary" />
+                </p>
+                <table id="tbExpedientes" class="table-bordered table-hover" style="width:100%;text-align:center">
+                    <thead>
+                        <tr>
+                            <th style="width:10%">Código</th>
+                            <th style="width:10%">Grado</th>
+                            <th style="width:40%">Postulante</th>
+                            <th style="width:20%">Sucursal</th>
+                            <th style="width:10%">Proceso</th>
+                            <th style="width:10%">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+}

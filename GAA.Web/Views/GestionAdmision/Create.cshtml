@@ -24,13 +24,15 @@
                             if (response != null && response.success && response.responseText == 'OK') {
                                 alert("Se creó el registro satisfacoriamente");
                                 window.location.href = '/GestionAdmision/Consulta/';
-                            }else {
+                            } else {
                                 alert(response.responseText);
                             }
                         }
                     });
                 }
             });
+
+
 
 
             $('#CodDepartamento').change(function () {
@@ -42,7 +44,7 @@
                     success: function (data) {
                         $("#CodCiudad").html('');
                         $.each(data, function (id, option) {
-                            $("#CodCiudad").append($('<option></option>').val(option.id).html(option.name));                            
+                            $("#CodCiudad").append($('<option></option>').val(option.id).html(option.name));
                         });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -50,6 +52,8 @@
                     }
                 });
             });
+
+
 
 
             $('#btnSalir').click(function () {

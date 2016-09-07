@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BExpediente.cs" />
     <Compile Include="BCiudad.cs" />
     <Compile Include="BPostulante.cs" />
     <Compile Include="BApoderado.cs" />

@@ -87,8 +87,14 @@ namespace GAA.Web.ViewModels
 
         #region CitaAdmision
         public int CodCitaAdmision { get; set; }
+
+        [Required(ErrorMessage = "(*) Ingrese la fecha")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime FechaCitaAdmision { get; set; }
-        public DateTime HoraCitaAdmision { get; set; }
+
+        [Required(ErrorMessage = "(*) Ingrese la hora")]
+        public string HoraCitaAdmision { get; set; }
         public int NroIntentosCitaAdmision { get; set; }
 
         [Required(ErrorMessage = "(*) Seleccione un estado para la Cita")]

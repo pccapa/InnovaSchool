@@ -23,7 +23,7 @@
                         dataType: 'json',
                         success: function (response) {
                             if (response != null && response.success && response.responseText == 'OK') {
-                                alert("Se registró la cita satisfacoriamente");
+                                alert("Se reprogramó la cita satisfacoriamente");
                                 window.location.href = '/GestionAdmision/Consulta/';
                             } else {
                                 alert(response.responseText);
@@ -69,6 +69,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>
+                            <span class="control-label"><b>Fecha Cita: </b> @Model.FechaCitaAdmision.ToString("dd/MM/yyyy")</span>
+                        </td>
+                        <td>
+                            <span class="control-label"><b>Hora Cita: </b>@Model.FechaCitaAdmision.ToString("HH:mm")</span>
+                        </td>
+                    </tr>
+                    <tr>
                         <td></td>
                         <td>
                             <span class="control-label"><b>Estado: </b>@Model.EstadoDescripcion</span> 
@@ -96,7 +104,7 @@
             <b>(*) Campos Obligatorios</b>
             <br />
             <div class="btn-group">
-                <input type="button" value="Registrar Cita" id="btnRegistrar" class="btn-primary" />
+                <input type="button" value="Reprogramar Cita" id="btnRegistrar" class="btn-primary" />
                 <input type="button" value="Cancelar Cita" id="btnCancelarCita" class="btn-primary" />
                 <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
             </div>

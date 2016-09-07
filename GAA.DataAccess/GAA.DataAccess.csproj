@@ -50,6 +50,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistencia\BaseDAO.cs" />
+    <Compile Include="Persistencia\ExpedienteDAO.cs" />
     <Compile Include="Persistencia\EstadoCitaDAO.cs" />
     <Compile Include="Persistencia\CiudadDAO.cs" />
     <Compile Include="Persistencia\ConexionUtil.cs" />
@@ -104,6 +105,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dominio\EstadoCita.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dominio\Expediente.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
