@@ -114,6 +114,15 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdapterPattern\Aprobado.cs" />
+    <Compile Include="AdapterPattern\EstadoCita.cs" />
+    <Compile Include="AdapterPattern\EstadoAdapter.cs" />
+    <Compile Include="AdapterPattern\Pendiente.cs" />
+    <Compile Include="AdapterPattern\Rechazado.cs" />
+    <Compile Include="BuilderPattern\Ficha.cs" />
+    <Compile Include="BuilderPattern\FichaBuilder.cs" />
+    <Compile Include="BuilderPattern\ExpedienteBuilder.cs" />
+    <Compile Include="BuilderPattern\ConstructorFicha.cs" />
     <Compile Include="Controllers\ExpedienteAdmisionController.cs" />
     <Compile Include="Controllers\GestionAdmisionController.cs" />
     <Compile Include="Controllers\GestionCitaController.cs" />

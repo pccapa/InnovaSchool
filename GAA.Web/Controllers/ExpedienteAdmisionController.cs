@@ -8,6 +8,7 @@ using GAA.Entity;
 using System.Text;
 using GAA.Web.ViewModels;
 using System.IO;
+using GAA.Web.BuilderPattern;
 
 namespace GAA.Web.Controllers
 {
@@ -17,6 +18,11 @@ namespace GAA.Web.Controllers
 
         public ActionResult Consulta()
         {
+            //FichaBuilder builder;
+            //ConstructorFicha constructor=new ConstructorFicha();
+            //builder = new ExpedienteBuilder();
+            //constructor.Constructor(builder);
+            //builder.Ficha.Show();
             return View();
         }
 

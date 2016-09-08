@@ -68,7 +68,7 @@
                             <th style="width:10%">Sucursal</th>
                             <th style="width:8%">Fecha</th>
                             <th style="width:7%">Hora</th>
-                            <th style="width:7%">Estado</th>
+                            <th style="width:7%">Estado de Cita</th>
                             <th style="width:10%">Acción</th>
                         </tr>
                     </thead>
@@ -76,16 +76,47 @@
                         @foreach (var item in @Model)
                         {
                             <tr>
-                                <td style="width:7%"><img src="~/Images/modify.png" class="img-rounded" alt="Modificar" onclick="window.location.href = '/GestionAdmision/Modify/@item.IdCitaAdmision';"></td>
-                                <td><img src="~/Images/delete.png" class="img-rounded" alt="Eliminar" onclick="EliminarRegistro(@item.IdCitaAdmision);"></td>
+                                @if (item.EstadoCita.Descripcion == "Realizada" || item.EstadoCita.Descripcion == "Eliminada")
+                                {
+                                    <td style="width:7%"><img src="~/Images/modify.png" class="img-rounded" alt="Modificar"></td>
+                                    <td><img src="~/Images/delete.png" class="img-rounded" alt="Eliminar"></td>
+                                }
+                                else
+                                {
+                                    <td style="width:7%"><img src="~/Images/modify.png" class="img-rounded" alt="Modificar" onclick="window.location.href = '/GestionAdmision/Modify/@item.IdCitaAdmision';"></td>
+                                    <td><img src="~/Images/delete.png" class="img-rounded" alt="Eliminar" onclick="EliminarRegistro(@item.IdCitaAdmision);"></td>
+                                }
                                 <td>@item.IdCitaAdmision </td>
                                 <td>@item.SolicitudAdmision.Grado.Descripcion </td>
                                 <td>@item.SolicitudAdmision.Postulante.FullName </td>
                                 <td>@item.SolicitudAdmision.Sucursal.Descripcion </td>
-                                <td>@item.SolicitudAdmision.Fecha </td>
-                                <td>@item.SolicitudAdmision.Hora </td>
+                                @if (item.FechaCita == null)
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@Convert.ToDateTime(item.FechaCita).ToString("dd/MM/yyyy")</td>
+                                    <td>@Convert.ToDateTime(item.FechaCita).ToString("HH:mm")</td>
+                                }
+
                                 <td>@item.EstadoCita.Descripcion </td>
-                                <td>  <a href="/GestionCita/Reprogramacion/@item.IdCitaAdmision">@item.EstadoCita.Descripcion</a>  </td>
+
+                                @if (item.EstadoCita.Descripcion == "Pendiente")
+                                {
+                                    <td>  <a href="/GestionCita/Programacion/@item.IdCitaAdmision">Programar Cita </a></td>
+                                }
+                                @if (item.EstadoCita.Descripcion == "Aprobada")
+                                {
+                                    <td>  <a href="/GestionCita/Reprogramacion/@item.IdCitaAdmision">Reprogramar Cita</a>  </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+
                             </tr>
                         }
                     </tbody>

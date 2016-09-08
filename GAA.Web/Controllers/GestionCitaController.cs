@@ -62,7 +62,7 @@ namespace GAA.Web.Controllers
                 viewModel.GradoDescripcion = cita.SolicitudAdmision.Grado.Descripcion;
                 viewModel.SucursalDescripcion = cita.SolicitudAdmision.Sucursal.Descripcion;
                 viewModel.EstadoDescripcion = cita.EstadoCita.Descripcion;
-                viewModel.FechaCitaAdmision = ((DateTime) cita.FechaCita);                
+                viewModel.FechaCitaAdmision = ((DateTime)cita.FechaCita);
 
                 DateTime fechainicio = new DateTime(2016, 010, 01, 9, 00, 00);
                 DateTime fechafin = new DateTime(2016, 010, 01, 18, 00, 00);
@@ -86,17 +86,18 @@ namespace GAA.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Registro(FormCollection collection) {
+        public ActionResult Registro(FormCollection collection)
+        {
             try
             {
                 BCitaAdmision objCita = new BCitaAdmision();
-                CitaAdmision cita= objCita.ListarTodo().Where(x=>x.IdCitaAdmision==Convert.ToInt32( collection["CodCitaAdmision"]) ).FirstOrDefault() ;
+                CitaAdmision cita = objCita.ListarTodo().Where(x => x.IdCitaAdmision == Convert.ToInt32(collection["CodCitaAdmision"])).FirstOrDefault();
 
-                DateTime fecha= Convert.ToDateTime(collection["FechaCitaAdmision"]);
+                DateTime fecha = Convert.ToDateTime(collection["FechaCitaAdmision"]);
                 cita.FechaCita = new DateTime(fecha.Year, fecha.Month, fecha.Day, Convert.ToInt32(collection["HoraCitaAdmision"].Substring(0, 2)), 0, 0);
-                cita.EstadoCita=new EstadoCita(){IdEstadoCita=2};
+                cita.EstadoCita = new EstadoCita() { IdEstadoCita = 2 };
 
-                cita=objCita.Modificar(cita);
+                cita = objCita.Modificar(cita);
 
                 if (cita.IdCitaAdmision > 0)
                     return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
@@ -109,7 +110,30 @@ namespace GAA.Web.Controllers
             }
         }
 
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult CancelarCita(int codCitaAdmision)
+        {
+            try
+            {
+                BCitaAdmision objCita = new BCitaAdmision();
+                CitaAdmision cita = new CitaAdmision();
 
+                cita = objCita.ListarTodo().Where(x => x.IdCitaAdmision == codCitaAdmision).FirstOrDefault();
+                cita.EstadoCita = new EstadoCita() { IdEstadoCita = 1 };//pendiente
+
+                cita=objCita.Modificar(cita);
+
+                if (cita.IdCitaAdmision > 0)
+                    return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = true, responseText = "Ocurrió un incoveniente con el registro" }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 
     }

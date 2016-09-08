@@ -26,7 +26,7 @@ namespace GAA.Web.Controllers
             {
                 BCitaAdmision objCita = new BCitaAdmision();
                 CitaAdmision citaAmodificar = objCita.ListarTodo().Where(x => x.IdCitaAdmision == codCitaAdmision).FirstOrDefault();
-                citaAmodificar.EstadoCita = new EstadoCita() { IdEstadoCita = 4 };
+                citaAmodificar.EstadoCita = new EstadoCita() { IdEstadoCita = 4 };//Eliminada
                 citaAmodificar = objCita.Modificar(citaAmodificar);
 
                 if (citaAmodificar.IdCitaAdmision > 0)

@@ -35,6 +35,26 @@
 
 
 
+            $('#btnCancelarCita').click(function () {
+                var form = $("#onlineform");
+
+                $.ajax({
+                    type: 'GET',
+                    url: "/GestionCita/CancelarCita",
+                    data: { "codCitaAdmision": $("#hdCodCitaAdmision").val() },
+                    success: function (response) {
+                        if (response != null && response.success && response.responseText == 'OK') {
+                            alert("Se canceló la cita satisfacoriamente");
+                            window.location.href = '/GestionAdmision/Consulta/';
+                        } else {
+                            alert(response.responseText);
+                        }
+                    }
+                });
+
+            });
+
+
             $('#btnSalir').click(function () {
                 window.location.href = '/GestionAdmision/Consulta/';
             });
@@ -57,7 +77,7 @@
                             <span class="control-label"><b>Código: </b> @Model.CodCitaAdmision</span>
                         </td>
                         <td>
-                            <span class="control-label"><b>Postulante: </b> @Model.NombresPostulante</span>                             
+                            <span class="control-label"><b>Postulante: </b> @Model.NombresPostulante</span>
                         </td>
                     </tr>
                     <tr>
@@ -65,7 +85,7 @@
                             <span class="control-label"><b>Grado: </b> @Model.GradoDescripcion</span>
                         </td>
                         <td>
-                            <span class="control-label"><b>Sucursal: </b>@Model.SucursalDescripcion</span>                            
+                            <span class="control-label"><b>Sucursal: </b>@Model.SucursalDescripcion</span>
                         </td>
                     </tr>
                     <tr>
@@ -79,7 +99,7 @@
                     <tr>
                         <td></td>
                         <td>
-                            <span class="control-label"><b>Estado: </b>@Model.EstadoDescripcion</span> 
+                            <span class="control-label"><b>Estado: </b>@Model.EstadoDescripcion</span>
                         </td>
                     </tr>
                 </table>
