@@ -45,6 +45,7 @@
     <Compile Include="CitaAdmision.cs" />
     <Compile Include="Ciudad.cs" />
     <Compile Include="Departamento.cs" />
+    <Compile Include="DocumentosExpediente.cs" />
     <Compile Include="EstadoCita.cs" />
     <Compile Include="Expediente.cs" />
     <Compile Include="Genero.cs" />

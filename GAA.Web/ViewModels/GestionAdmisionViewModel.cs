@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.Web.DynamicData;
 
 namespace GAA.Web.ViewModels
 {
@@ -28,7 +29,7 @@ namespace GAA.Web.ViewModels
         public string OcupacionApoderado { get; set; }
 
         [Required(ErrorMessage = "(*) Ingresar Email del Apoderado")]
-        [StringLength(50, ErrorMessage = "La longitud máxima es 50")]        
+        [StringLength(50, ErrorMessage = "La longitud máxima es 50")]
         [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Email invalido")]
         public string EmailApoderado { get; set; }
 
@@ -44,12 +45,12 @@ namespace GAA.Web.ViewModels
         public int CodTipoDocumentoApoderado { get; set; }
 
         [Required(ErrorMessage = "(*) Seleccione un Vinculo")]
-        public int CodVinculo    { get; set; } 
+        public int CodVinculo { get; set; }
         #endregion
 
         #region Postulante
         public int CodPostulante { get; set; }
-        
+
         [Required(ErrorMessage = "(*) Ingresar Nombre del Postulante")]
         [StringLength(50, ErrorMessage = "La longitud máxima es 50")]
         public string NombresPostulante { get; set; }
@@ -64,9 +65,9 @@ namespace GAA.Web.ViewModels
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessage = "(*) Ingresar Fecha de Nacimiento del Postulante")]        
+        [Required(ErrorMessage = "(*) Ingresar Fecha de Nacimiento del Postulante")]
         public DateTime FechaNacimientoPostulante { get; set; }
-        
+
         [Required(ErrorMessage = "(*) Ingresar el lugar de nacimiento del Postulante")]
         [StringLength(100, ErrorMessage = "(*) La longitud máxima es 100")]
         public string LugarNacimientoPostulante { get; set; }
@@ -82,7 +83,7 @@ namespace GAA.Web.ViewModels
 
         [Required(ErrorMessage = "(*) Seleccione un Tipo Documento")]
         public int CodTipoDocumentoPostulante { get; set; }
-        
+
         #endregion
 
         #region CitaAdmision
@@ -98,16 +99,16 @@ namespace GAA.Web.ViewModels
         public int NroIntentosCitaAdmision { get; set; }
 
         [Required(ErrorMessage = "(*) Seleccione un estado para la Cita")]
-        public int CodEstadoCita { get; set; } 
+        public int CodEstadoCita { get; set; }
 
-        public string GradoDescripcion{ get; set; }
-        public string SucursalDescripcion{ get; set; }
-        public string EstadoDescripcion{ get; set; } 
+        public string GradoDescripcion { get; set; }
+        public string SucursalDescripcion { get; set; }
+        public string EstadoDescripcion { get; set; }
         #endregion
 
         #region SolicitudAdmision
 
-        public  int CodSolicitudAdmision  { get; set; }
+        public int CodSolicitudAdmision { get; set; }
         public DateTime FechaSolicitudAdmision { get; set; }
 
         [Required(ErrorMessage = "(*) Seleccione un Grado")]
@@ -117,5 +118,28 @@ namespace GAA.Web.ViewModels
         public int CodSucursal { get; set; }
         #endregion
 
+        #region Expediente
+        public int CodExpediente{ get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FechaActaNacimiento { get; set; }
+        public string ObservacionActaNacimiento { get; set; }      
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FechaCertificadoEstudios { get; set; }
+        public string ObservacionCertificadoEstudios { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FechaConstanciaHomologacion { get; set; }
+        public string ObservacionConstanciaHomologacion { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FechaCopiaDocumentacionApoderado { get; set; }
+        public string ObservacionCopiaDocumentacionApoderado { get; set; }
+        #endregion
     }
 }

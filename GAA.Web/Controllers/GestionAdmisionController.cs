@@ -19,7 +19,7 @@ namespace GAA.Web.Controllers
             return View(listAdmision);
         }
 
-        [AcceptVerbs(HttpVerbs.Get)]
+        [AcceptVerbs(HttpVerbs.Get)] 
         public ActionResult Eliminar(int codCitaAdmision)
         {
             try

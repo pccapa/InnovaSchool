@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="GAA.Entity"
+                   namespace="GAA.Entity"
+                   default-lazy="false">
+  <class name="DocumentosExpediente" table="GAA_DocumentosExpediente">
+    <id name="IdDocumentosExpediente" column="idDocumentosExpediente">
+      <generator class="increment" />
+    </id>
+    <many-to-one name="Expediente" column="idExpediente" />
+    <property name="FechaDocumento" column="fechaDocumento" />
+    <property name="Observacion" column="observacion" />
+    <property name="Ruta" column="ruta" />
+
+  </class>
+</hibernate-mapping>
