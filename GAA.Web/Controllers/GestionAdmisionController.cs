@@ -74,7 +74,9 @@ namespace GAA.Web.Controllers
         public ActionResult Create()
         {
             PopulateDropDownList();
-            return View();
+            GestionAdmisionViewModel viewModel = new GestionAdmisionViewModel();
+            viewModel.FechaNacimientoPostulante = DateTime.Now.AddYears(-10).ToString("dd/MM/yyyy");
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -93,7 +95,7 @@ namespace GAA.Web.Controllers
                     Apellido = collection["ApellidosApoderado"],
                     VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
-                    NumeroDocumento = Convert.ToInt32(collection["NumDocumentoApoderado"]),
+                    NumeroDocumento = collection["NumDocumentoApoderado"],
                     Ocupacion = collection["OcupacionApoderado"],
                     Email = collection["EmailApoderado"],
                     Telefono = collection["TelefonoApoderado"],
@@ -106,8 +108,8 @@ namespace GAA.Web.Controllers
                     Apellido = collection["ApellidosPostulante"],
                     Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
-                    NumeroDocumento = Convert.ToInt32(collection["NumDocumentoPostulante"]),
-                    FechaNacimiento = Convert.ToDateTime(collection["FechaNacimientoPostulante"]),
+                    NumeroDocumento = collection["NumDocumentoPostulante"],
+                    FechaNacimiento = DateTime.ParseExact(collection["FechaNacimientoPostulante"],"dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture),
                     LugarNacimiento = collection["LugarNacimientoPostulante"],
                     Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
                     Apoderado = apoderado
@@ -198,7 +200,7 @@ namespace GAA.Web.Controllers
                 viewModel.NombresPostulante = cita.SolicitudAdmision.Postulante.Nombre;
                 viewModel.ApellidosPostulante = cita.SolicitudAdmision.Postulante.Apellido;
                 viewModel.NumDocumentoPostulante = cita.SolicitudAdmision.Postulante.NumeroDocumento;
-                viewModel.FechaNacimientoPostulante = cita.SolicitudAdmision.Postulante.FechaNacimiento;
+                viewModel.FechaNacimientoPostulante = cita.SolicitudAdmision.Postulante.FechaNacimiento.ToString("dd/MM/yyyy");
                 viewModel.LugarNacimientoPostulante = cita.SolicitudAdmision.Postulante.LugarNacimiento;
 
                 viewModel.CodSolicitudAdmision = cita.SolicitudAdmision.IdSolicitudAdmision;
@@ -236,7 +238,7 @@ namespace GAA.Web.Controllers
                     Apellido = collection["ApellidosApoderado"],
                     VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
-                    NumeroDocumento = Convert.ToInt32(collection["NumDocumentoApoderado"]),
+                    NumeroDocumento = collection["NumDocumentoApoderado"],
                     Ocupacion = collection["OcupacionApoderado"],
                     Email = collection["EmailApoderado"],
                     Telefono = collection["TelefonoApoderado"],
@@ -250,8 +252,8 @@ namespace GAA.Web.Controllers
                     Apellido = collection["ApellidosPostulante"],
                     Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
                     TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
-                    NumeroDocumento = Convert.ToInt32(collection["NumDocumentoPostulante"]),
-                    FechaNacimiento = Convert.ToDateTime(collection["FechaNacimientoPostulante"]),
+                    NumeroDocumento = collection["NumDocumentoPostulante"],                    
+                    FechaNacimiento = DateTime.ParseExact(collection["FechaNacimientoPostulante"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture),
                     LugarNacimiento = collection["LugarNacimientoPostulante"],
                     Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
                     Apoderado = apoderado

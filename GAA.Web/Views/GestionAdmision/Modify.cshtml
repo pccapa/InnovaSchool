@@ -5,12 +5,14 @@
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "onlineform" }))
-{  
-        
+{
+
     @Html.AntiForgeryToken()
 
     <script type="text/javascript">
         $(document).ready(function () {
+            
+            $("#FechaNacimientoPostulante").attr('readOnly', 'true');
 
             $('#btnGuardar').click(function () {
                 var form = $("#onlineform");
@@ -24,13 +26,30 @@
                             if (response != null && response.success && response.responseText == 'OK') {
                                 alert("Se actualizó el registro satisfacoriamente");
                                 window.location.href = '/GestionAdmision/Consulta/';
-                            }else {
+                            } else {
                                 alert(response.responseText);
                             }
                         }
                     });
                 }
             });
+
+
+
+            $('#FechaNacimientoPostulante').datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1960:2016',
+                //showOn: "button",
+                //buttonImage: "images/calendar.gif",
+                //buttonImageOnly: true,
+                //minDate: new Date(1999, 10 - 1, 25),
+                //maxDate: '+30Y',
+                //inline: true
+
+            });
+
 
 
             $('#CodDepartamento').change(function () {
@@ -42,7 +61,7 @@
                     success: function (data) {
                         $("#CodCiudad").html('');
                         $.each(data, function (id, option) {
-                            $("#CodCiudad").append($('<option></option>').val(option.id).html(option.name));                            
+                            $("#CodCiudad").append($('<option></option>').val(option.id).html(option.name));
                         });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -74,7 +93,7 @@
                 <table class="table-condensed">
                     <tbody>
                         <tr>
-                            <td>                                
+                            <td>
                                 @Html.LabelFor(model => model.NombresApoderado, "Nombres Apoderado (*)", htmlAttributes: new { @class = "control-label" })
                                 @Html.EditorFor(model => model.NombresApoderado, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.NombresApoderado, "", new { @class = "text-danger" })
@@ -177,8 +196,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.FechaNacimientoPostulante, "Fecha de Nacimiento (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.FechaNacimientoPostulante, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.FechaNacimientoPostulante, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.FechaNacimientoPostulante,  new { htmlAttributes = new { @class = "form-control" } })
                             </td>
                         </tr>
                         <tr>
@@ -243,7 +261,9 @@
                 <input type="button" value="Guardar" id="btnGuardar" class="btn-primary" />
                 <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
             </div>
-        </div>              
+        </div>
+        <script>            
+        </script>
     </fieldset>
 }
 

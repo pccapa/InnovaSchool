@@ -11,6 +11,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            
+            $("#FechaNacimientoPostulante").attr('readOnly', 'true');
 
             $('#btnGuardar').click(function () {
                 var form = $("#onlineform");
@@ -30,6 +32,22 @@
                         }
                     });
                 }
+            });
+
+
+
+            $('#FechaNacimientoPostulante').datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1960:2016',
+                //showOn: "button",
+                //buttonImage: "images/calendar.gif",
+                //buttonImageOnly: true,
+                //minDate: new Date(1999, 10 - 1, 25),
+                //maxDate: '+30Y',
+                //inline: true
+
             });
 
 
@@ -56,6 +74,7 @@
 
 
 
+
             $('#btnSalir').click(function () {
                 window.location.href = '/GestionAdmision/Consulta/';
             });
@@ -64,6 +83,7 @@
 
 
         });
+
 
     </script>
 
@@ -98,7 +118,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.NumDocumentoApoderado, "Numero Documento Apoderado (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.NumDocumentoApoderado, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.NumDocumentoApoderado, new { htmlAttributes = new { @class = "form-control", @onkeypress = "alert('gdf');return isNumberKey(event);" } })
                                 @Html.ValidationMessageFor(model => model.NumDocumentoApoderado, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -178,8 +198,8 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.FechaNacimientoPostulante, "Fecha de Nacimiento (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.FechaNacimientoPostulante, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.FechaNacimientoPostulante, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.FechaNacimientoPostulante, new { htmlAttributes = new { @class = "form-control" } })
+
                             </td>
                         </tr>
                         <tr>

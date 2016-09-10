@@ -36,7 +36,7 @@ namespace GAA.Web.Controllers
             try
             {
                 List<Expediente> listExpediente = objExpediente.ListarTodo().ToList();
-                List<CitaAdmision> listCita = objcita.ListarTodo().Where(x => x.SolicitudAdmision.Postulante.NumeroDocumento == numeroDocumento).ToList();
+                List<CitaAdmision> listCita = objcita.ListarTodo().Where(x => Convert.ToInt32( x.SolicitudAdmision.Postulante.NumeroDocumento) == numeroDocumento).ToList();
 
                 foreach (CitaAdmision cita in listCita)
                 {
@@ -86,7 +86,7 @@ namespace GAA.Web.Controllers
             {
                 Expediente expediente = new Expediente()
                 {
-                    CitaAdmision = objCita.ListarTodo().Where(x => x.SolicitudAdmision.Postulante.NumeroDocumento == numeroDocumento).FirstOrDefault()
+                    CitaAdmision = objCita.ListarTodo().Where(x => Convert.ToInt32( x.SolicitudAdmision.Postulante.NumeroDocumento) == numeroDocumento).FirstOrDefault()
                 };
                 expediente = objExpediente.Crear(expediente);
 
@@ -118,7 +118,7 @@ namespace GAA.Web.Controllers
                 viewmodel.NombresPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.FullName;
                 viewmodel.NumDocumentoApoderado = expediente.CitaAdmision.SolicitudAdmision.Postulante.Apoderado.NumeroDocumento;
                 viewmodel.NumDocumentoPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.NumeroDocumento;
-                viewmodel.FechaNacimientoPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.FechaNacimiento;
+                viewmodel.FechaNacimientoPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.FechaNacimiento.ToString("dd/MM/yyyy");
                 viewmodel.FechaSolicitudAdmision = expediente.CitaAdmision.SolicitudAdmision.FechaSolicitud;
                 viewmodel.GradoDescripcion = expediente.CitaAdmision.SolicitudAdmision.Grado.Descripcion;
                 viewmodel.SucursalDescripcion = expediente.CitaAdmision.SolicitudAdmision.Sucursal.Descripcion;
@@ -244,7 +244,7 @@ namespace GAA.Web.Controllers
                 viewmodel.NombresPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.FullName;
                 viewmodel.NumDocumentoApoderado = expediente.CitaAdmision.SolicitudAdmision.Postulante.Apoderado.NumeroDocumento;
                 viewmodel.NumDocumentoPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.NumeroDocumento;
-                viewmodel.FechaNacimientoPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.FechaNacimiento;
+                viewmodel.FechaNacimientoPostulante = expediente.CitaAdmision.SolicitudAdmision.Postulante.FechaNacimiento.ToString("dd/MM/yyyy");
                 viewmodel.FechaSolicitudAdmision = expediente.CitaAdmision.SolicitudAdmision.FechaSolicitud;
                 viewmodel.GradoDescripcion = expediente.CitaAdmision.SolicitudAdmision.Grado.Descripcion;
                 viewmodel.SucursalDescripcion = expediente.CitaAdmision.SolicitudAdmision.Sucursal.Descripcion;

@@ -62,9 +62,9 @@ namespace GAA.Entity
             get { return apellido; }
             set { apellido = value; }
         }
-        private int numeroDocumento;
+        private string numeroDocumento;
 
-        public int NumeroDocumento
+        public string NumeroDocumento
         {
             get { return numeroDocumento; }
             set { numeroDocumento = value; }

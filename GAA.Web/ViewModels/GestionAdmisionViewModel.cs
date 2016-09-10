@@ -21,8 +21,9 @@ namespace GAA.Web.ViewModels
         public string ApellidosApoderado { get; set; }
 
         [Required(ErrorMessage = "(*) Ingresar Numero de Documento de Apoderado")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El numero de documento debe ser numérico")]
         [StringLength(15, ErrorMessage = "La longitud máxima es 15")]
-        public int NumDocumentoApoderado { get; set; }
+        public string NumDocumentoApoderado { get; set; }
 
         [Required(ErrorMessage = "(*) Ingresar la ocupación del Apoderado")]
         [StringLength(50, ErrorMessage = "(*) La longitud máxima es 50")]
@@ -60,13 +61,15 @@ namespace GAA.Web.ViewModels
         public string ApellidosPostulante { get; set; }
 
         [Required(ErrorMessage = "(*) Ingresar Numero de Documento de Postulante")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El numero de documento debe ser numérico")]
         [StringLength(15, ErrorMessage = "La longitud máxima es 15")]
-        public int NumDocumentoPostulante { get; set; }
+        public string NumDocumentoPostulante { get; set; }
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        //[DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false )]
+        //[Range(typeof(DateTime), "01/01/1960", "12/12/2016", ErrorMessage = "Value for {0} must be between {1} and {2}")]                         
         [Required(ErrorMessage = "(*) Ingresar Fecha de Nacimiento del Postulante")]
-        public DateTime FechaNacimientoPostulante { get; set; }
+        public string FechaNacimientoPostulante { get; set; }
 
         [Required(ErrorMessage = "(*) Ingresar el lugar de nacimiento del Postulante")]
         [StringLength(100, ErrorMessage = "(*) La longitud máxima es 100")]
@@ -141,5 +144,29 @@ namespace GAA.Web.ViewModels
         public DateTime FechaCopiaDocumentacionApoderado { get; set; }
         public string ObservacionCopiaDocumentacionApoderado { get; set; }
         #endregion
+
     }
+
+    public class ValidateDateRange : ValidationAttribute
+    {
+        public DateTime FirstDate { get; set; }
+        public DateTime SecondDate { get; set; }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            FirstDate = DateTime.Now.AddYears(-60);
+            SecondDate = DateTime.Now;
+            // your validation logic
+            if (Convert.ToDateTime( value )>= FirstDate && Convert.ToDateTime( value )<= SecondDate)
+            {
+                return new ValidationResult("Date is not in given range.");
+                //return ValidationResult.Success;
+            }
+            else
+            {
+                return new ValidationResult("Date is not in given range.");
+            }
+        }
+    }
+
 }
