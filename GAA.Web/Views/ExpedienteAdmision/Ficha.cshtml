@@ -8,195 +8,231 @@
 {
     @Html.AntiForgeryToken()
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        //$('#btnGuardarDocumentos').click(function () {
-        //    var form = $("#onlineform");
-        //    if (form.valid()) {
-        //        $.ajax({
-        //            type: 'POST',
-        //            url: "/ExpedienteAdmision/Ficha",
-        //            data: form.serialize(),
-        //            dataType: 'json',
-        //            success: function (response) {
-        //                if (response != null && response.success && response.responseText == 'OK') {
-        //                    alert("Se grabó los documentos satisfactoriamente");
-        //                    window.location.href = '/ExpedienteAdmision/Consulta/';
-        //                } else {
-        //                    alert(response.responseText);
-        //                }
-        //            }
-        //        });
-        //    }
-        //});
+            //$('#btnGuardarDocumentos').click(function () {
+            //    var form = $("#onlineform");
+            //    if (form.valid()) {
+            //        $.ajax({
+            //            type: 'POST',
+            //            url: "/ExpedienteAdmision/Ficha",
+            //            data: form.serialize(),
+            //            dataType: 'json',
+            //            success: function (response) {
+            //                if (response != null && response.success && response.responseText == 'OK') {
+            //                    alert("Se grabó los documentos satisfactoriamente");
+            //                    window.location.href = '/ExpedienteAdmision/Consulta/';
+            //                } else {
+            //                    alert(response.responseText);
+            //                }
+            //            }
+            //        });
+            //    }
+            //});
 
 
 
-        $('#btnSalir').click(function () {
-            window.location.href = '/ExpedienteAdmision/Consulta/';
+            $('#btnSalir').click(function () {
+                window.location.href = '/ExpedienteAdmision/Consulta/';
+            });
+
+
         });
 
 
-    });
 
 
 
-
-
-</script>
-
-<fieldset>
-    @if (TempData["message"] != null)
-    {
-    <script type="text/javascript">
-        alert(@Html.Raw(Json.Encode(TempData["message"])));
-        window.location.href = '/ExpedienteAdmision/Consulta/';
     </script>
-    }
 
-    @Html.HiddenFor(model => model.CodExpediente, new { id = "hdCodExpediente" })
-    <div class="panel panel-primary" style="width:100%">
-        <div class="panel-heading">Expediente de Admisión</div>
-        <div class="panel-body">
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#menu1">General</a></li>
-                <li><a data-toggle="tab" href="#menu2">Documentación</a></li>
-                <li><a data-toggle="tab" href="#menu3">Resultado de Evaluación</a></li>
-                <li><a data-toggle="tab" href="#menu4">Resultado del Proceso</a></li>
-            </ul>
+    <fieldset>
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                alert(@Html.Raw(Json.Encode(TempData["message"])));
+                window.location.href = '/ExpedienteAdmision/Consulta/';
+            </script>
+        }
 
-            <div class="tab-content">
-                <div id="menu1" class="tab-pane fade in active">
-                    <b><span class="control-label">Datos de la Solicitud</span></b>
-                    <table class="table-condensed" width="100%">
-                        <tr>
-                            <td>
-                                <span class="control-label"><b>Representante: </b> @Model.NombresApoderado</span>
-                            </td>
-                            <td>
-                                <span class="control-label"><b>N° Documento: </b> @Model.NumDocumentoApoderado</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="control-label"><b>Postulante: </b> @Model.NombresPostulante</span>
-                            </td>
-                            <td>
-                                <span class="control-label"><b>N° Documento: </b> @Model.NumDocumentoPostulante</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="control-label"><b>Fecha Nacimiento Postulante: </b> @Model.FechaNacimientoPostulante.ToString("dd/MM/yyyy")</span>
-                            </td>
-                            <td>
-                                <span class="control-label"><b>Año Escolar: </b> @Model.FechaSolicitudAdmision.Year</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="control-label"><b>Grado a postular: </b> @Model.GradoDescripcion</span>
-                            </td>
-                            <td>
-                                <span class="control-label"><b>Sucursal: </b> @Model.SucursalDescripcion</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="control-label"><b>Código de Solicitud: </b> @Model.CodSolicitudAdmision</span>
-                            </td>
-                            <td>
-                                <span class="control-label"><b>Fecha Solicitud: </b> @Model.FechaSolicitudAdmision.ToString("dd/MM/yyyy")</span>
-                            </td>
-                        </tr>
-                    </table>
+        @Html.HiddenFor(model => model.CodExpediente, new { id = "hdCodExpediente" })
+        <div class="panel panel-primary" style="width:100%">
+            <div class="panel-heading">Expediente de Admisión</div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#menu1">General</a></li>
+                    <li><a data-toggle="tab" href="#menu2">Documentación</a></li>
+                    <li><a data-toggle="tab" href="#menu3">Resultado de Evaluación</a></li>
+                    <li><a data-toggle="tab" href="#menu4">Resultado del Proceso</a></li>
+                </ul>
 
-                </div>
-                <div id="menu2" class="tab-pane fade">
-                    <b><span class="control-label">Documentación Solicitada</span></b>
-                    <p></p>
-                    <span class="control-label">Copia de Acta de Nacimiento Certificada</span>
-                    <table class="table-condensed" width="100%">
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.FechaActaNacimiento, "Fecha:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.FechaActaNacimiento, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                @Html.LabelFor(model => model.ObservacionActaNacimiento, "Observaciones:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.ObservacionActaNacimiento, new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                <span class="control-label">Cargar archivo</span>
-                                <input type="file" name="UpObservacionActaNacimiento" class="form-control" />
-                            </td>
-                        </tr>
+                <div class="tab-content">
+                    <div id="menu1" class="tab-pane fade in active">
+                        <b><span class="control-label">Datos de la Solicitud</span></b>
+                        <table class="table-condensed" width="100%">
+                            <tr>
+                                <td>
+                                    <span class="control-label"><b>Representante: </b> @Model.NombresApoderado</span>
+                                </td>
+                                <td>
+                                    <span class="control-label"><b>N° Documento: </b> @Model.NumDocumentoApoderado</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="control-label"><b>Postulante: </b> @Model.NombresPostulante</span>
+                                </td>
+                                <td>
+                                    <span class="control-label"><b>N° Documento: </b> @Model.NumDocumentoPostulante</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="control-label"><b>Fecha Nacimiento Postulante: </b> @Model.FechaNacimientoPostulante</span>
+                                </td>
+                                <td>
+                                    <span class="control-label"><b>Año Escolar: </b> @Model.FechaSolicitudAdmision.Year</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="control-label"><b>Grado a postular: </b> @Model.GradoDescripcion</span>
+                                </td>
+                                <td>
+                                    <span class="control-label"><b>Sucursal: </b> @Model.SucursalDescripcion</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="control-label"><b>Código de Solicitud: </b> @Model.CodSolicitudAdmision</span>
+                                </td>
+                                <td>
+                                    <span class="control-label"><b>Fecha Solicitud: </b> @Model.FechaSolicitudAdmision.ToString("dd/MM/yyyy")</span>
+                                </td>
+                            </tr>
+                        </table>
 
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.FechaCertificadoEstudios, "Fecha:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.FechaCertificadoEstudios, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                @Html.LabelFor(model => model.ObservacionCertificadoEstudios, "Observaciones:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.ObservacionCertificadoEstudios, new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                <span class="control-label">Cargar archivo</span>
-                                <input type="file" name="UpObservacionCertificadoEstudios" class="form-control" />
-                            </td>
-                        </tr>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                        <b><span class="control-label">Documentación Solicitada</span></b>
+                        <p></p>
+                        <span class="control-label">Copia de Acta de Nacimiento Certificada</span>
+                        <table class="table-condensed" width="100%">
+                            <tr>
+                                <td>
+                                    <span class="control-label">Fecha: @Model.FechaActaNacimiento</span>
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.ObservacionActaNacimiento, "Observaciones:", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.ObservacionActaNacimiento, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
+                                <td>
+                                    <span class="control-label">Cargar archivo</span>
+                                    <input type="file" name="UpObservacionActaNacimiento" class="form-control" />
+                                </td>
+                                <td>
+                                    @if (Model.TieneActaNacimiento)
+                                    {
+                                        <span class="control-label">Cargado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="control-label">No Cargado</span>
+                                    }
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.FechaConstanciaHomologacion, "Fecha:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.FechaConstanciaHomologacion, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                @Html.LabelFor(model => model.ObservacionConstanciaHomologacion, "Observaciones:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.ObservacionConstanciaHomologacion, new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                <span class="control-label">Cargar archivo</span>
-                                <input type="file" name="UpObservacionConstanciaHomologacion" class="form-control" />
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <span class="control-label">Fecha: @Model.FechaCertificadoEstudios</span>
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.ObservacionCertificadoEstudios, "Observaciones:", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.ObservacionCertificadoEstudios, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
+                                <td>
+                                    <span class="control-label">Cargar archivo</span>
+                                    <input type="file" name="UpObservacionCertificadoEstudios" class="form-control" />
+                                </td>
+                                <td>
+                                    @if (Model.TieneCertificadoEstudios)
+                                    {
+                                        <span class="control-label">Cargado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="control-label">No Cargado</span>
+                                    }
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.FechaCopiaDocumentacionApoderado, "Fecha:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.FechaCopiaDocumentacionApoderado, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                @Html.LabelFor(model => model.ObservacionCopiaDocumentacionApoderado, "Observaciones:", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.ObservacionCopiaDocumentacionApoderado, new { htmlAttributes = new { @class = "form-control" } })
-                            </td>
-                            <td>
-                                <span class="control-label">Cargar archivo</span>
-                                <input type="file" name="UpObservacionCopiaDocumentacionApoderado" class="form-control" />
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <span class="control-label">Fecha: @Model.FechaConstanciaHomologacion</span>
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.ObservacionConstanciaHomologacion, "Observaciones:", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.ObservacionConstanciaHomologacion, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
+                                <td>
+                                    <span class="control-label">Cargar archivo</span>
+                                    <input type="file" name="UpObservacionConstanciaHomologacion" class="form-control" />
+                                </td>
+                                <td>
+                                    @if (Model.TieneConstanciaHomologacion)
+                                    {
+                                        <span class="control-label">Cargado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="control-label">No Cargado</span>
+                                    }
+                                </td>
+                            </tr>
 
-                    </table>
-                    <br />
-                    <div class="btn-group">
-                        <input type="submit" value="Guardar Documentación" id="btnGuardarDocumentos" class="btn-primary" />
+                            <tr>
+                                <td>
+                                    <span class="control-label">Fecha: @Model.FechaCopiaDocumentacionApoderado</span>
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.ObservacionCopiaDocumentacionApoderado, "Observaciones:", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.ObservacionCopiaDocumentacionApoderado, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
+                                <td>
+                                    <span class="control-label">Cargar archivo</span>
+                                    <input type="file" name="UpObservacionCopiaDocumentacionApoderado" class="form-control" />
+                                </td>
+                                <td>
+                                    @if (Model.TieneCopiaDocumentacionApoderado)
+                                    {
+                                        <span class="control-label">Cargado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="control-label">No Cargado</span>
+                                    }
+                                </td>
+                            </tr>
+
+                        </table>
+                        <br />
+                        <div class="btn-group">
+                            <input type="submit" value="Guardar Documentación" id="btnGuardarDocumentos" class="btn-primary" />
+                        </div>
+                    </div>
+                    <div id="menu4" class="tab-pane fade">
+
+                        contenido
+
                     </div>
                 </div>
-                <div id="menu4" class="tab-pane fade">
-
-                    contenido
-
+                <br />
+                <div class="btn-group">
+                    <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
                 </div>
             </div>
-            <br />
-            <div class="btn-group">
-                <input type="button" value="Salir" id="btnSalir" class="btn-primary" />                
-            </div>
         </div>
-    </div>
 
-</fieldset>
+    </fieldset>
 }

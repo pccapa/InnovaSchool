@@ -61,6 +61,7 @@
     <Compile Include="Persistencia\GeneroDAO.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistencia\FechaCitaAdmisionDAO.cs" />
     <Compile Include="Persistencia\GradoDAO.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -112,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dominio\DocumentosExpediente.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dominio\FechaCitaAdmision.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,7 +26,7 @@ namespace GAA.Business
         {
             try
             {
-                return documentosExpedienteDAO.ListarTodos().ToList();
+                return DocumentosExpedienteDAO.ListarTodos().ToList();
             }
             catch (Exception ex)
             {
@@ -57,5 +57,18 @@ namespace GAA.Business
                 throw ex;
             }
         }
+
+        public void Eliminar(DocumentosExpediente documentoAeliminar)
+        {
+            try
+            {
+                DocumentosExpedienteDAO.Eliminar(documentoAeliminar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

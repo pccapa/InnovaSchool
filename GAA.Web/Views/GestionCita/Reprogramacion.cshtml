@@ -35,24 +35,26 @@
 
 
 
-            $('#btnCancelarCita').click(function () {
-                var form = $("#onlineform");
 
+            $('#FechaCitaAdmision').change(function () {
                 $.ajax({
-                    type: 'GET',
-                    url: "/GestionCita/CancelarCita",
-                    data: { "codCitaAdmision": $("#hdCodCitaAdmision").val() },
-                    success: function (response) {
-                        if (response != null && response.success && response.responseText == 'OK') {
-                            alert("Se canceló la cita satisfacoriamente");
-                            window.location.href = '/GestionAdmision/Consulta/';
-                        } else {
-                            alert(response.responseText);
-                        }
+                    cache: false,
+                    type: "GET",
+                    url: "/GestionCita/GetHoraCita",
+                    data: { "fechaCita": $(this).val() },
+                    success: function (data) {
+                        $("#HoraCitaAdmision").html('');
+                        $.each(data, function (id, option) {
+                            $("#HoraCitaAdmision").append($('<option></option>').val(option.id).html(option.name));
+                        });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Falló al recibir las horas.');
                     }
                 });
-
             });
+
+
 
 
             $('#btnSalir').click(function () {
@@ -90,10 +92,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="control-label"><b>Fecha Cita: </b> @Model.FechaCitaAdmision.ToString("dd/MM/yyyy")</span>
+                            <span class="control-label"><b>Fecha Cita: </b> @Model.FechaCitaAdmision</span>
                         </td>
                         <td>
-                            <span class="control-label"><b>Hora Cita: </b>@Model.FechaCitaAdmision.ToString("HH:mm")</span>
+                            <span class="control-label"><b>Hora Cita: </b>@Model.HoraCitaAdmision</span>
                         </td>
                     </tr>
                     <tr>
@@ -109,12 +111,12 @@
                     <tr>
                         <td>
                             @Html.LabelFor(model => model.FechaCitaAdmision, "Fecha Cita: ", htmlAttributes: new { @class = "control-label", style = "font-weight:Bold" })
-                            @Html.EditorFor(model => model.FechaCitaAdmision, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownList("FechaCitaAdmision", (SelectList)ViewBag.ListaFechaCita, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.FechaCitaAdmision, "", new { @class = "text-danger" })
                         </td>
                         <td>
                             @Html.LabelFor(model => model.HoraCitaAdmision, "Hora Cita: ", htmlAttributes: new { @class = "control-label", style = "font-weight:Bold" })
-                            @Html.DropDownList("HoraCitaAdmision", (SelectList)ViewBag.ListaHora, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.HoraCitaAdmision, Enumerable.Empty<SelectListItem>(), "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.HoraCitaAdmision, "", new { @class = "text-danger" })
                         </td>
                     </tr>
@@ -124,8 +126,7 @@
             <b>(*) Campos Obligatorios</b>
             <br />
             <div class="btn-group">
-                <input type="button" value="Reprogramar Cita" id="btnRegistrar" class="btn-primary" />
-                <input type="button" value="Cancelar Cita" id="btnCancelarCita" class="btn-primary" />
+                <input type="button" value="Reprogramar Cita" id="btnRegistrar" class="btn-primary" />                
                 <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
             </div>
         </div>

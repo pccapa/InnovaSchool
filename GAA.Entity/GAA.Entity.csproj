@@ -49,6 +49,7 @@
     <Compile Include="EstadoCita.cs" />
     <Compile Include="Expediente.cs" />
     <Compile Include="Genero.cs" />
+    <Compile Include="FechaCitaAdmision.cs" />
     <Compile Include="Grado.cs" />
     <Compile Include="HorarioHora.cs" />
     <Compile Include="Postulante.cs" />

@@ -3,14 +3,15 @@
                    assembly="GAA.Entity"
                    namespace="GAA.Entity"
                    default-lazy="false">
-  <class name="DocumentosExpediente" table="GAA_DocumentosExpediente">
-    <id name="IdDocumentosExpediente" column="idDocumentosExpediente">
-      <generator class="increment" />
-    </id>
-    <many-to-one name="Expediente" column="idExpediente" />
-    <property name="FechaDocumento" column="fechaDocumento" />
-    <property name="Observacion" column="observacion" />
-    <property name="Ruta" column="ruta" />
+	<class name="DocumentosExpediente" table="GAA_DocumentosExpediente">
+		<id name="IdDocumentosExpediente" column="idDocumentosExpediente">
+			<generator class="increment" />
+		</id>
+		<many-to-one name="Expediente" column="idExpediente" />
+		<property name="FechaDocumento" column="fechaDocumento" />
+		<property name="Observacion" column="observacion" />
+		<property name="Ruta" column="ruta" />
+		<property name="Tipo" column="tipo" />
 
-  </class>
+	</class>
 </hibernate-mapping>

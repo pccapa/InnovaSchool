@@ -3,15 +3,11 @@
                    assembly="GAA.Entity"
                    namespace="GAA.Entity"
                    default-lazy="false">
-	<class name="CitaAdmision" table="GAA_CitaAdmision">
-		<id name="IdCitaAdmision" column="idCitaAdmision">
+	<class name="FechaCitaAdmision" table="GAA_FechaCitaAdmision">
+		<id name="IdFechaCitaAdmision" column="idFechaCitaAdmision">
 			<generator class="increment" />
 		</id>
-		<many-to-one name="SolicitudAdmision" column="idSolicitudAdmision" />
-		<many-to-one name="EstadoCita" column="idEstadoCita" />
 		<property name="FechaCita" column="fechaCita" />
-		<property name="NumeroIntento" column="numeroIntento" />
-
-
+		<property name="Estado" column="estado" />
 	</class>
 </hibernate-mapping>

@@ -11,12 +11,11 @@ namespace GAA.Web.Controllers
 {
     public class GestionCitaController : Controller
     {
-        //
-        // GET: /GestionCita/
 
         public ActionResult Programacion(int id)
         {
             BCitaAdmision objCitaAdmision = new BCitaAdmision();
+            BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
             CitaAdmision cita = new CitaAdmision();
             GestionAdmisionViewModel viewModel = new GestionAdmisionViewModel();
             try
@@ -28,29 +27,26 @@ namespace GAA.Web.Controllers
                 viewModel.SucursalDescripcion = cita.SolicitudAdmision.Sucursal.Descripcion;
                 viewModel.EstadoDescripcion = cita.EstadoCita.Descripcion;
 
-                DateTime fechainicio = new DateTime(2016, 010, 01, 9, 00, 00);
-                DateTime fechafin = new DateTime(2016, 010, 01, 18, 00, 00);
-                List<HorarioHora> lista = new List<HorarioHora>();
+                var listfecha = (from c in objFechaCita.ListarTodo()
+                                 select new
+                                 {
+                                     id = c.FechaCita.ToString("dd/MM/yyyy"),
+                                     name = c.FechaCita.ToString("dd/MM/yyyy")
+                                 }).Distinct().ToList();
 
-                for (int t = 0; fechainicio <= fechafin; t++)
-                {
-                    lista.Add(new HorarioHora() { Codigo = fechainicio.AddHours(1).ToString("HH:mm"), Valor = fechainicio.AddHours(1).ToString("HH:mm") });
-                    fechainicio = fechainicio.AddHours(1);
-                }
-
-                ViewBag.ListaHora = new SelectList(lista, "Codigo", "Valor", 0);
+                ViewBag.ListaFechaCita = new SelectList(listfecha, "id", "name", 0);
 
                 return View(viewModel);
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
 
         public ActionResult Reprogramacion(int id)
         {
+            BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
             BCitaAdmision objCitaAdmision = new BCitaAdmision();
             CitaAdmision cita = new CitaAdmision();
             GestionAdmisionViewModel viewModel = new GestionAdmisionViewModel();
@@ -62,19 +58,17 @@ namespace GAA.Web.Controllers
                 viewModel.GradoDescripcion = cita.SolicitudAdmision.Grado.Descripcion;
                 viewModel.SucursalDescripcion = cita.SolicitudAdmision.Sucursal.Descripcion;
                 viewModel.EstadoDescripcion = cita.EstadoCita.Descripcion;
-                viewModel.FechaCitaAdmision = ((DateTime)cita.FechaCita);
+                viewModel.FechaCitaAdmision = Convert.ToDateTime(cita.FechaCita).ToString("dd/MM/yyyy");
+                viewModel.HoraCitaAdmision = Convert.ToDateTime(cita.FechaCita).ToString("HH:mm");
 
-                DateTime fechainicio = new DateTime(2016, 010, 01, 9, 00, 00);
-                DateTime fechafin = new DateTime(2016, 010, 01, 18, 00, 00);
-                List<HorarioHora> lista = new List<HorarioHora>();
+                var listfecha = (from c in objFechaCita.ListarTodo()
+                                 select new
+                                 {
+                                     id = c.FechaCita.ToString("dd/MM/yyyy"),
+                                     name = c.FechaCita.ToString("dd/MM/yyyy")
+                                 }).Distinct().ToList();
 
-                for (int t = 0; fechainicio <= fechafin; t++)
-                {
-                    lista.Add(new HorarioHora() { Codigo = fechainicio.AddHours(1).ToString("HH:mm"), Valor = fechainicio.AddHours(1).ToString("HH:mm") });
-                    fechainicio = fechainicio.AddHours(1);
-                }
-
-                ViewBag.ListaHora = new SelectList(lista, "Codigo", "Valor", 0);
+                ViewBag.ListaFechaCita = new SelectList(listfecha, "id", "name", 0);
 
                 return View(viewModel);
             }
@@ -121,7 +115,7 @@ namespace GAA.Web.Controllers
                 cita = objCita.ListarTodo().Where(x => x.IdCitaAdmision == codCitaAdmision).FirstOrDefault();
                 cita.EstadoCita = new EstadoCita() { IdEstadoCita = 1 };//pendiente
 
-                cita=objCita.Modificar(cita);
+                cita = objCita.Modificar(cita);
 
                 if (cita.IdCitaAdmision > 0)
                     return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
@@ -135,6 +129,30 @@ namespace GAA.Web.Controllers
             }
         }
 
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult GetHoraCita(string fechaCita)
+        {
+            BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
+            try
+            {
+                List<FechaCitaAdmision> listfecha = new List<FechaCitaAdmision>();
+
+                listfecha = objFechaCita.ListarTodo().Where(x => x.FechaCita.ToString("dd/MM/yyyy") == fechaCita).ToList();
+                var lista = (from c in listfecha
+                             select new
+                             {
+                                 id = c.FechaCita.ToString("HH:mm"),
+                                 name = c.FechaCita.ToString("HH:mm"),
+                             }).ToList();
+
+                return Json(lista, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

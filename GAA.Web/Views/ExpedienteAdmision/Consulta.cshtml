@@ -36,6 +36,7 @@
 
 
 
+
             $('#btnSalir').click(function () {
                 window.location.href = '/GestionAdmision/Consulta/';
             });
@@ -44,7 +45,7 @@
 
 
             function ListarExpedientes() {
-                $('#tbExpedientes tbody').append('');
+                $('#tbExpedientes tbody').empty();
                 $.ajax({
                     cache: false,
                     type: "GET",

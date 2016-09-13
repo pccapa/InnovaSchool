@@ -22,6 +22,8 @@
 
         });
 
+
+
         function EliminarRegistro(codigo) {
             if (confirm('Está seguro de eliminar la postulación?. La Cita será eliminada.')) {
                 $.ajax({
@@ -42,6 +44,27 @@
         }
 
 
+        function CancelarCita(idCita){
+            if( confirm('Desea cancelar la cita?') ){
+                $.ajax({
+                    type: 'GET',
+                    url: "/GestionCita/CancelarCita",
+                    data: { "codCitaAdmision": idCita },
+                    success: function (response) {
+                        if (response != null && response.success && response.responseText == 'OK') {
+                            alert("Se canceló la cita satisfacoriamente");
+                            window.location.href = '/GestionAdmision/Consulta/';
+                        } else {
+                            alert(response.responseText);
+                        }
+                    }
+                });
+            }
+        }
+
+
+
+
     </script>
 
     <fieldset>
@@ -60,16 +83,17 @@
                 <table class="table-bordered table-hover" style="width:100%;text-align:center">
                     <thead>
                         <tr>
-                            <th style="width:7%">Editar</th>
-                            <th style="width:7%">Eliminar</th>
+                            <th style="width:6%">Editar Solicitud</th>
+                            <th style="width:6%">Eliminar Solicitud</th>
                             <th style="width:8%">Código</th>
                             <th style="width:10%">Grado postulación</th>
-                            <th style="width:24%">Postulante</th>
+                            <th style="width:20%">Postulante</th>
                             <th style="width:10%">Sucursal</th>
-                            <th style="width:8%">Fecha Cita</th>
+                            <th style="width:6%">Fecha Cita</th>
                             <th style="width:7%">Hora Cita</th>
                             <th style="width:10%">Estado de Cita</th>
-                            <th style="width:10%">Acción</th>
+                            <th style="width:10%">Citas</th>
+                            <th style="width:10%">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,7 +131,7 @@
                                 {
                                     <td>  <a href="/GestionCita/Programacion/@item.IdCitaAdmision">Programar Cita </a></td>
                                 }
-                                @if (item.EstadoCita.Descripcion == "Aprobada")
+                                else if (item.EstadoCita.Descripcion == "Aprobada")
                                 {
                                     <td>  <a href="/GestionCita/Reprogramacion/@item.IdCitaAdmision">Reprogramar Cita</a>  </td>
                                 }
@@ -117,6 +141,14 @@
                                 }
 
 
+                                @if (item.EstadoCita.Descripcion == "Aprobada")
+                                {
+                                    <td>  <a onclick="CancelarCita(@item.IdCitaAdmision);">Cancelar Cita</a></td>
+                                }
+                                else
+                                {
+                                    <td align="center">--</td>
+                                }
                             </tr>
                         }
                     </tbody>

@@ -43,5 +43,13 @@ namespace GAA.Entity
             set { ruta = value; }
         }
 
+        private int tipo;
+
+        public int Tipo
+        {
+            get { return tipo; }
+            set { tipo = value; }
+        }
+
     }
 }

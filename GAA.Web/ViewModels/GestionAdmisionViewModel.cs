@@ -21,7 +21,7 @@ namespace GAA.Web.ViewModels
         public string ApellidosApoderado { get; set; }
 
         [Required(ErrorMessage = "(*) Ingresar Numero de Documento de Apoderado")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El numero de documento debe ser numérico")]
+        [RegularExpression("([0-9][0-9]*)", ErrorMessage = "El numero de documento debe ser numérico")]
         [StringLength(15, ErrorMessage = "La longitud máxima es 15")]
         public string NumDocumentoApoderado { get; set; }
 
@@ -61,7 +61,7 @@ namespace GAA.Web.ViewModels
         public string ApellidosPostulante { get; set; }
 
         [Required(ErrorMessage = "(*) Ingresar Numero de Documento de Postulante")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El numero de documento debe ser numérico")]
+        [RegularExpression("([0-9][0-9]*)", ErrorMessage = "El numero de documento debe ser numérico")]
         [StringLength(15, ErrorMessage = "La longitud máxima es 15")]
         public string NumDocumentoPostulante { get; set; }
 
@@ -93,9 +93,9 @@ namespace GAA.Web.ViewModels
         public int CodCitaAdmision { get; set; }
 
         [Required(ErrorMessage = "(*) Ingrese la fecha")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime FechaCitaAdmision { get; set; }
+        //[DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public string FechaCitaAdmision { get; set; }
 
         [Required(ErrorMessage = "(*) Ingrese la hora")]
         public string HoraCitaAdmision { get; set; }
@@ -123,50 +123,24 @@ namespace GAA.Web.ViewModels
 
         #region Expediente
         public int CodExpediente{ get; set; }
+        
+        public string FechaActaNacimiento { get; set; }
+        public string ObservacionActaNacimiento { get; set; }
+        public bool TieneActaNacimiento { get; set; }      
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime FechaActaNacimiento { get; set; }
-        public string ObservacionActaNacimiento { get; set; }      
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime FechaCertificadoEstudios { get; set; }
+        public string FechaCertificadoEstudios { get; set; }
         public string ObservacionCertificadoEstudios { get; set; }
+        public bool TieneCertificadoEstudios { get; set; }      
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime FechaConstanciaHomologacion { get; set; }
+        public string FechaConstanciaHomologacion { get; set; }
         public string ObservacionConstanciaHomologacion { get; set; }
+        public bool TieneConstanciaHomologacion { get; set; }      
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime FechaCopiaDocumentacionApoderado { get; set; }
+        public string FechaCopiaDocumentacionApoderado { get; set; }
         public string ObservacionCopiaDocumentacionApoderado { get; set; }
+        public bool TieneCopiaDocumentacionApoderado { get; set; }      
         #endregion
 
-    }
-
-    public class ValidateDateRange : ValidationAttribute
-    {
-        public DateTime FirstDate { get; set; }
-        public DateTime SecondDate { get; set; }
-
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            FirstDate = DateTime.Now.AddYears(-60);
-            SecondDate = DateTime.Now;
-            // your validation logic
-            if (Convert.ToDateTime( value )>= FirstDate && Convert.ToDateTime( value )<= SecondDate)
-            {
-                return new ValidationResult("Date is not in given range.");
-                //return ValidationResult.Success;
-            }
-            else
-            {
-                return new ValidationResult("Date is not in given range.");
-            }
-        }
     }
 
 }
