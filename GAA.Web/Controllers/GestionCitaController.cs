@@ -85,6 +85,7 @@ namespace GAA.Web.Controllers
             try
             {
                 BCitaAdmision objCita = new BCitaAdmision();
+                BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
                 CitaAdmision cita = objCita.ListarTodo().Where(x => x.IdCitaAdmision == Convert.ToInt32(collection["CodCitaAdmision"])).FirstOrDefault();
 
                 DateTime fecha = Convert.ToDateTime(collection["FechaCitaAdmision"]);
@@ -92,6 +93,7 @@ namespace GAA.Web.Controllers
                 cita.EstadoCita = new EstadoCita() { IdEstadoCita = 2 };
 
                 cita = objCita.Modificar(cita);
+
 
                 if (cita.IdCitaAdmision > 0)
                     return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
@@ -137,7 +139,7 @@ namespace GAA.Web.Controllers
             {
                 List<FechaCitaAdmision> listfecha = new List<FechaCitaAdmision>();
 
-                listfecha = objFechaCita.ListarTodo().Where(x => x.FechaCita.ToString("dd/MM/yyyy") == fechaCita).ToList();
+                listfecha = objFechaCita.ListarTodo().Where(x => x.Estado == 1 && x.FechaCita.ToString("dd/MM/yyyy") == fechaCita).ToList();
                 var lista = (from c in listfecha
                              select new
                              {

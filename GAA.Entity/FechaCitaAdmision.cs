@@ -22,9 +22,9 @@ namespace GAA.Entity
             get { return fechaCita; }
             set { fechaCita = value; }
         }
-        private string estado;
+        private int estado;
 
-        public string Estado
+        public int Estado
         {
             get { return estado; }
             set { estado = value; }
