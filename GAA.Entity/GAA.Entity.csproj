@@ -46,6 +46,7 @@
     <Compile Include="Ciudad.cs" />
     <Compile Include="Departamento.cs" />
     <Compile Include="DocumentosExpediente.cs" />
+    <Compile Include="EstadoExpediente.cs" />
     <Compile Include="EstadoCita.cs" />
     <Compile Include="Expediente.cs" />
     <Compile Include="Genero.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="Postulante.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolicitudAdmision.cs" />
+    <Compile Include="ResultadoEvaluacion.cs" />
+    <Compile Include="ResultadoProceso.cs" />
     <Compile Include="Sucursal.cs" />
     <Compile Include="TipoDocumento.cs" />
     <Compile Include="VinculoApoderado.cs" />

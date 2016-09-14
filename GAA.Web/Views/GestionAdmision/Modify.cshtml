@@ -116,7 +116,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.NumDocumentoApoderado, "Numero Documento Apoderado (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.NumDocumentoApoderado, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.NumDocumentoApoderado, new { htmlAttributes = new { @class = "form-control", @maxlength = "9" } })
                                 @Html.ValidationMessageFor(model => model.NumDocumentoApoderado, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -137,7 +137,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.TelefonoApoderado, "Teléfono Apoderado (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.TelefonoApoderado, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.TelefonoApoderado, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
                                 @Html.ValidationMessageFor(model => model.TelefonoApoderado, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -189,7 +189,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.NumDocumentoPostulante, "Numero Documento Postulante (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.NumDocumentoPostulante, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.NumDocumentoPostulante, new { htmlAttributes = new { @class = "form-control", @maxlength = "9" } })
                                 @Html.ValidationMessageFor(model => model.NumDocumentoPostulante, "", new { @class = "text-danger" })
                             </td>
                         </tr>

@@ -68,7 +68,19 @@ namespace GAA.Web.Controllers
                                      name = c.FechaCita.ToString("dd/MM/yyyy")
                                  }).Distinct().ToList();
 
+
+                List<FechaCitaAdmision> listhora = new List<FechaCitaAdmision>();
+
+                listhora = objFechaCita.ListarTodo().Where(x => x.Estado == 1 && x.FechaCita.ToString("dd/MM/yyyy") == Convert.ToDateTime(cita.FechaCita).ToString("dd/MM/yyyy")).ToList();
+                var lista = (from c in listhora
+                             select new
+                             {
+                                 id = c.FechaCita.ToString("HH:mm"),
+                                 name = c.FechaCita.ToString("HH:mm"),
+                             }).ToList();
+
                 ViewBag.ListaFechaCita = new SelectList(listfecha, "id", "name", 0);
+                ViewBag.ListaHoraCita = new SelectList(lista, "id", "name", 0);
 
                 return View(viewModel);
             }
@@ -84,15 +96,29 @@ namespace GAA.Web.Controllers
         {
             try
             {
-                BCitaAdmision objCita = new BCitaAdmision();
-                BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
+                BCitaAdmision objCita = new BCitaAdmision();                
                 CitaAdmision cita = objCita.ListarTodo().Where(x => x.IdCitaAdmision == Convert.ToInt32(collection["CodCitaAdmision"])).FirstOrDefault();
+
+
+                BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
+                FechaCitaAdmision fechaa = new FechaCitaAdmision();
+                if (cita.FechaCita != null) {
+                    fechaa = objFechaCita.ListarTodo().Where(f => f.FechaCita == cita.FechaCita).FirstOrDefault();
+                    fechaa.Estado = 1;
+                    objFechaCita.Modificar(fechaa);
+                }
+                
+
 
                 DateTime fecha = Convert.ToDateTime(collection["FechaCitaAdmision"]);
                 cita.FechaCita = new DateTime(fecha.Year, fecha.Month, fecha.Day, Convert.ToInt32(collection["HoraCitaAdmision"].Substring(0, 2)), 0, 0);
                 cita.EstadoCita = new EstadoCita() { IdEstadoCita = 2 };
-
                 cita = objCita.Modificar(cita);
+
+
+                fechaa = objFechaCita.ListarTodo().Where(f => f.FechaCita == cita.FechaCita).FirstOrDefault();
+                fechaa.Estado = 0;
+                objFechaCita.Modificar(fechaa);
 
 
                 if (cita.IdCitaAdmision > 0)
@@ -115,7 +141,21 @@ namespace GAA.Web.Controllers
                 CitaAdmision cita = new CitaAdmision();
 
                 cita = objCita.ListarTodo().Where(x => x.IdCitaAdmision == codCitaAdmision).FirstOrDefault();
+
+
+                BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
+                FechaCitaAdmision fechaa = new FechaCitaAdmision();
+                if (cita.FechaCita != null)
+                {
+                    fechaa = objFechaCita.ListarTodo().Where(f => f.FechaCita == cita.FechaCita).FirstOrDefault();
+                    fechaa.Estado = 1;
+                    objFechaCita.Modificar(fechaa);
+                }
+
+
+
                 cita.EstadoCita = new EstadoCita() { IdEstadoCita = 1 };//pendiente
+                cita.FechaCita = null;
 
                 cita = objCita.Modificar(cita);
 
@@ -155,6 +195,8 @@ namespace GAA.Web.Controllers
                 return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
 
     }
 }

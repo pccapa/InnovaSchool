@@ -36,5 +36,17 @@ namespace GAA.Business
         }
 
 
+        public FechaCitaAdmision Modificar(FechaCitaAdmision fechaCitaAdmisionAmodificar)
+        {
+            try
+            {
+                return FechaCitaDAO.Modificar(fechaCitaAdmisionAmodificar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

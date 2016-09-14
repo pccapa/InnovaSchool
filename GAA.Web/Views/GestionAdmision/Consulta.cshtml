@@ -85,7 +85,7 @@
                         <tr>
                             <th style="width:6%">Editar Solicitud</th>
                             <th style="width:6%">Eliminar Solicitud</th>
-                            <th style="width:8%">Código</th>
+                            <th style="width:8%">N° Documento Postulante</th>
                             <th style="width:10%">Grado postulación</th>
                             <th style="width:20%">Postulante</th>
                             <th style="width:10%">Sucursal</th>
@@ -102,15 +102,15 @@
                             <tr>
                                 @if (item.EstadoCita.Descripcion == "Realizada" || item.EstadoCita.Descripcion == "Eliminada")
                                 {
-                                    <td style="width:7%"><img src="~/Images/modify.png" class="img-rounded" alt="Modificar"></td>
-                                    <td><img src="~/Images/delete.png" class="img-rounded" alt="Eliminar"></td>
+                                    <td style="width:7%"><img src="~/Images/modify.png" class="img-rounded" alt="Modificar" onclick="alert('No se puede modificar esta solicitud.');"></td>
+                                    <td><img src="~/Images/delete.png" class="img-rounded" alt="Eliminar" onclick="alert('No se puede eliminar esta solicitud.');"></td>
                                 }
                                 else
                                 {
                                     <td style="width:7%"><img src="~/Images/modify.png" class="img-rounded" alt="Modificar" onclick="window.location.href = '/GestionAdmision/Modify/@item.IdCitaAdmision';"></td>
                                     <td><img src="~/Images/delete.png" class="img-rounded" alt="Eliminar" onclick="EliminarRegistro(@item.IdCitaAdmision);"></td>
                                 }
-                                <td>@item.IdCitaAdmision </td>
+                                <td>@item.SolicitudAdmision.Postulante.NumeroDocumento </td>
                                 <td>@item.SolicitudAdmision.Grado.Descripcion </td>
                                 <td>@item.SolicitudAdmision.Postulante.FullName </td>
                                 <td>@item.SolicitudAdmision.Sucursal.Descripcion </td>

@@ -19,7 +19,7 @@ namespace GAA.Web.Controllers
             return View(listAdmision);
         }
 
-        [AcceptVerbs(HttpVerbs.Get)] 
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Eliminar(int codCitaAdmision)
         {
             try
@@ -42,7 +42,7 @@ namespace GAA.Web.Controllers
         #endregion
 
         #region Crear
-        private void PopulateDropDownList(int codDepartamento=0)
+        private void PopulateDropDownList(int codDepartamento = 0)
         {
             try
             {
@@ -60,8 +60,8 @@ namespace GAA.Web.Controllers
                 ViewBag.ListaDepartamento = new SelectList(departamento.ListarTodo(), "IdDepartamento", "Descripcion", 0);
                 ViewBag.ListaApoderadoVinculo = new SelectList(vinculo.ListarTodo(), "idVinculoApoderado", "Descripcion", 0);
                 ViewBag.ListaGenero = new SelectList(genero.ListarTodo(), "IdGenero", "Descripcion", 0);
-                if( codDepartamento>0 )
-                    ViewBag.ListaCiudad = new SelectList(ciudad.ListarTodo().Where(x=>x.Departamento.IdDepartamento==codDepartamento).ToList() , "IdCiudad", "Descripcion", 0);
+                if (codDepartamento > 0)
+                    ViewBag.ListaCiudad = new SelectList(ciudad.ListarTodo().Where(x => x.Departamento.IdDepartamento == codDepartamento).ToList(), "IdCiudad", "Descripcion", 0);
                 else
                     ViewBag.ListaCiudad = new SelectList(Enumerable.Empty<SelectListItem>(), "IdCiudad", "Descripcion", 0);
             }
@@ -89,58 +89,70 @@ namespace GAA.Web.Controllers
                 BPostulante objPostulante = new BPostulante();
                 BCitaAdmision objCita = new BCitaAdmision();
 
-                Apoderado apoderado = new Apoderado()
+                if (objPostulante.ListarTodo().Any(v => v.NumeroDocumento == collection["NumDocumentoPostulante"]))
                 {
-                    Nombre = collection["NombresApoderado"],
-                    Apellido = collection["ApellidosApoderado"],
-                    VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
-                    TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
-                    NumeroDocumento = collection["NumDocumentoApoderado"],
-                    Ocupacion = collection["OcupacionApoderado"],
-                    Email = collection["EmailApoderado"],
-                    Telefono = collection["TelefonoApoderado"],
-                    Direccion = collection["DireccionApoderado"]
-                };
-
-                Postulante postulante = new Postulante()
+                    return Json(new { success = true, responseText = "Ya existe un postulante con el mismo N° Documento. No se puede crear la solicitud." }, JsonRequestBehavior.AllowGet);
+                }
+                else if (objPostulante.ListarTodo().Any(v => v.Nombre == collection["NombresPostulante"] && v.Apellido == collection["ApellidosPostulante"]))
                 {
-                    Nombre = collection["NombresPostulante"],
-                    Apellido = collection["ApellidosPostulante"],
-                    Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
-                    TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
-                    NumeroDocumento = collection["NumDocumentoPostulante"],
-                    FechaNacimiento = DateTime.ParseExact(collection["FechaNacimientoPostulante"],"dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture),
-                    LugarNacimiento = collection["LugarNacimientoPostulante"],
-                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
-                    Apoderado = apoderado
-                };
-
-                SolicitudAdmision solicitud = new SolicitudAdmision()
-                {
-                    Postulante = postulante,
-                    Grado = new Grado() { IdGrado = Convert.ToInt32(collection["CodGrado"]) },
-                    Sucursal = new Sucursal() { IdSucursal = Convert.ToInt32(collection["CodSucursal"]) },
-                    FechaSolicitud = DateTime.Now
-                };
-
-                CitaAdmision cita = new CitaAdmision()
-                {
-                    SolicitudAdmision = solicitud,
-                    EstadoCita = new EstadoCita() { IdEstadoCita = 1 },///verificar esto
-                    FechaCita = null,
-                    NumeroIntento = 0
-                };
-
-
-                objApoderado.Crear(apoderado);
-                objPostulante.Crear(postulante);
-                objSolicitud.Crear(solicitud);
-                CitaAdmision citaCreada = objCita.Crear(cita);
-
-                if (citaCreada.IdCitaAdmision > 0)
-                    return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = true, responseText = "Ya existe un postulante con los mismos nombres. No se puede crear la solicitud." }, JsonRequestBehavior.AllowGet);
+                }
                 else
-                    return Json(new { success = true, responseText = "Ocurrió un incoveniente al crear la el registro" }, JsonRequestBehavior.AllowGet);
+                {
+                    Apoderado apoderado = new Apoderado()
+                    {
+                        Nombre = collection["NombresApoderado"],
+                        Apellido = collection["ApellidosApoderado"],
+                        VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
+                        TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
+                        NumeroDocumento = collection["NumDocumentoApoderado"],
+                        Ocupacion = collection["OcupacionApoderado"],
+                        Email = collection["EmailApoderado"],
+                        Telefono = collection["TelefonoApoderado"],
+                        Direccion = collection["DireccionApoderado"]
+                    };
+
+                    Postulante postulante = new Postulante()
+                    {
+                        Nombre = collection["NombresPostulante"],
+                        Apellido = collection["ApellidosPostulante"],
+                        Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
+                        TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
+                        NumeroDocumento = collection["NumDocumentoPostulante"],
+                        FechaNacimiento = DateTime.ParseExact(collection["FechaNacimientoPostulante"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture),
+                        LugarNacimiento = collection["LugarNacimientoPostulante"],
+                        Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
+                        Apoderado = apoderado
+                    };
+
+                    SolicitudAdmision solicitud = new SolicitudAdmision()
+                    {
+                        Postulante = postulante,
+                        Grado = new Grado() { IdGrado = Convert.ToInt32(collection["CodGrado"]) },
+                        Sucursal = new Sucursal() { IdSucursal = Convert.ToInt32(collection["CodSucursal"]) },
+                        FechaSolicitud = DateTime.Now
+                    };
+
+                    CitaAdmision cita = new CitaAdmision()
+                    {
+                        SolicitudAdmision = solicitud,
+                        EstadoCita = new EstadoCita() { IdEstadoCita = 1 },///verificar esto
+                        FechaCita = null,
+                        NumeroIntento = 0
+                    };
+
+
+                    objApoderado.Crear(apoderado);
+                    objPostulante.Crear(postulante);
+                    objSolicitud.Crear(solicitud);
+                    CitaAdmision citaCreada = objCita.Crear(cita);
+
+                    if (citaCreada.IdCitaAdmision > 0)
+                        return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                    else
+                        return Json(new { success = true, responseText = "Ocurrió un incoveniente al crear la el registro" }, JsonRequestBehavior.AllowGet);
+                }
+
             }
             catch (Exception ex)
             {
@@ -231,51 +243,63 @@ namespace GAA.Web.Controllers
                 BPostulante objPostulante = new BPostulante();
                 BCitaAdmision objCita = new BCitaAdmision();
 
-                Apoderado apoderado = new Apoderado()
+                if (objPostulante.ListarTodo().Any(v => v.IdPostulante != Convert.ToInt32(collection["CodPostulante"]) && v.NumeroDocumento == collection["NumDocumentoPostulante"]))
                 {
-                    IdApoderado=Convert.ToInt32( collection["CodApoderado"]),
-                    Nombre = collection["NombresApoderado"],
-                    Apellido = collection["ApellidosApoderado"],
-                    VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
-                    TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
-                    NumeroDocumento = collection["NumDocumentoApoderado"],
-                    Ocupacion = collection["OcupacionApoderado"],
-                    Email = collection["EmailApoderado"],
-                    Telefono = collection["TelefonoApoderado"],
-                    Direccion = collection["DireccionApoderado"]
-                };
-
-                Postulante postulante = new Postulante()
+                    return Json(new { success = true, responseText = "Ya existe un postulante con el mismo N° Documento. No se puede crear la solicitud." }, JsonRequestBehavior.AllowGet);
+                }
+                else if (objPostulante.ListarTodo().Any(v => v.IdPostulante != Convert.ToInt32(collection["CodPostulante"]) && v.Nombre == collection["NombresPostulante"] && v.Apellido == collection["ApellidosPostulante"]))
                 {
-                    IdPostulante = Convert.ToInt32(collection["CodPostulante"]),
-                    Nombre = collection["NombresPostulante"],
-                    Apellido = collection["ApellidosPostulante"],
-                    Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
-                    TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
-                    NumeroDocumento = collection["NumDocumentoPostulante"],                    
-                    FechaNacimiento = DateTime.ParseExact(collection["FechaNacimientoPostulante"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture),
-                    LugarNacimiento = collection["LugarNacimientoPostulante"],
-                    Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
-                    Apoderado = apoderado
-                };
-
-                SolicitudAdmision solicitud = new SolicitudAdmision()
-                {
-                    IdSolicitudAdmision = Convert.ToInt32(collection["CodSolicitudAdmision"]),
-                    Postulante = postulante,
-                    Grado = new Grado() { IdGrado = Convert.ToInt32(collection["CodGrado"]) },
-                    Sucursal = new Sucursal() { IdSucursal = Convert.ToInt32(collection["CodSucursal"]) },
-                    FechaSolicitud = DateTime.Now
-                };
-
-                objApoderado.Modificar(apoderado);
-                objPostulante.Modificar(postulante);
-                SolicitudAdmision solicitudCreada = objSolicitud.Modificar(solicitud);
-
-                if (solicitudCreada.IdSolicitudAdmision > 0)
-                    return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = true, responseText = "Ya existe un postulante con los mismos nombres. No se puede crear la solicitud." }, JsonRequestBehavior.AllowGet);
+                }
                 else
-                    return Json(new { success = true, responseText = "Ocurrió un incoveniente al modificar el registro" }, JsonRequestBehavior.AllowGet);
+                {
+                    Apoderado apoderado = new Apoderado()
+                    {
+                        IdApoderado = Convert.ToInt32(collection["CodApoderado"]),
+                        Nombre = collection["NombresApoderado"],
+                        Apellido = collection["ApellidosApoderado"],
+                        VinculoApoderado = new VinculoApoderado() { IdVinculoApoderado = Convert.ToInt32(collection["CodVinculo"]) },
+                        TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoApoderado"]) },
+                        NumeroDocumento = collection["NumDocumentoApoderado"],
+                        Ocupacion = collection["OcupacionApoderado"],
+                        Email = collection["EmailApoderado"],
+                        Telefono = collection["TelefonoApoderado"],
+                        Direccion = collection["DireccionApoderado"]
+                    };
+
+                    Postulante postulante = new Postulante()
+                    {
+                        IdPostulante = Convert.ToInt32(collection["CodPostulante"]),
+                        Nombre = collection["NombresPostulante"],
+                        Apellido = collection["ApellidosPostulante"],
+                        Genero = new Genero() { IdGenero = Convert.ToInt32(collection["CodGenero"]) },
+                        TipoDocumento = new TipoDocumento() { IdTipoDocumento = Convert.ToInt32(collection["CodTipoDocumentoPostulante"]) },
+                        NumeroDocumento = collection["NumDocumentoPostulante"],
+                        FechaNacimiento = DateTime.ParseExact(collection["FechaNacimientoPostulante"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture),
+                        LugarNacimiento = collection["LugarNacimientoPostulante"],
+                        Ciudad = new Ciudad() { IdCiudad = Convert.ToInt32(collection["CodCiudad"]) },
+                        Apoderado = apoderado
+                    };
+
+                    SolicitudAdmision solicitud = new SolicitudAdmision()
+                    {
+                        IdSolicitudAdmision = Convert.ToInt32(collection["CodSolicitudAdmision"]),
+                        Postulante = postulante,
+                        Grado = new Grado() { IdGrado = Convert.ToInt32(collection["CodGrado"]) },
+                        Sucursal = new Sucursal() { IdSucursal = Convert.ToInt32(collection["CodSucursal"]) },
+                        FechaSolicitud = DateTime.Now
+                    };
+
+                    objApoderado.Modificar(apoderado);
+                    objPostulante.Modificar(postulante);
+                    SolicitudAdmision solicitudCreada = objSolicitud.Modificar(solicitud);
+
+                    if (solicitudCreada.IdSolicitudAdmision > 0)
+                        return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                    else
+                        return Json(new { success = true, responseText = "Ocurrió un incoveniente al modificar el registro" }, JsonRequestBehavior.AllowGet);
+                }
+
             }
             catch (Exception ex)
             {

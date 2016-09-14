@@ -42,6 +42,8 @@
     <Compile Include="BDocumentosExpediente.cs" />
     <Compile Include="BExpediente.cs" />
     <Compile Include="BCiudad.cs" />
+    <Compile Include="BResultadoProceso.cs" />
+    <Compile Include="BResultadoEvaluacion.cs" />
     <Compile Include="BFechaCitaAdmision.cs" />
     <Compile Include="BPostulante.cs" />
     <Compile Include="BApoderado.cs" />

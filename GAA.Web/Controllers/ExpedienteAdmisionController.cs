@@ -8,7 +8,6 @@ using GAA.Entity;
 using System.Text;
 using GAA.Web.ViewModels;
 using System.IO;
-using GAA.Web.BuilderPattern;
 
 namespace GAA.Web.Controllers
 {
@@ -44,17 +43,17 @@ namespace GAA.Web.Controllers
                     htmlText.Append("<tr>");
 
 
-                    if (listExpediente.Any(x => x.CitaAdmision.IdCitaAdmision == cita.IdCitaAdmision))
+                    if (listExpediente.Any(x => x.CitaAdmision.IdCitaAdmision == cita.IdCitaAdmision && x.EstadoExpediente !=null  ))
                     {
                         int idexp = listExpediente.Where(c => c.CitaAdmision.IdCitaAdmision == cita.IdCitaAdmision).FirstOrDefault().IdExpediente;
-                        htmlText.Append("<td> <a href='/ExpedienteAdmision/Ficha/" + idexp + "'>" + idexp + "</a> </td>");
-                        strEstado = "<td> Pendiente </td>";
+                        htmlText.Append("<td> <a href='/ExpedienteAdmision/Ficha/" + idexp + "'>" + idexp + "</a> </td>");                        
+                        strEstado = "<td> " + listExpediente.Where(x => x.CitaAdmision.IdCitaAdmision == cita.IdCitaAdmision).FirstOrDefault().EstadoExpediente.Descripcion + " </td>";
                     }
                     else
                     {
                         htmlText.Append("<td> -- </td>");
                         strEstado = "<td> Pendiente </td>";
-                    }
+                    }                    
                     htmlText.Append("<td> " + cita.SolicitudAdmision.Grado.Descripcion + " </td>");
                     htmlText.Append("<td> " + cita.SolicitudAdmision.Postulante.FullName + " </td>");
                     htmlText.Append("<td> " + cita.SolicitudAdmision.Sucursal.Descripcion + " </td>");
@@ -84,16 +83,57 @@ namespace GAA.Web.Controllers
 
             try
             {
-                Expediente expediente = new Expediente()
+                if (!objCita.ListarTodo().Any(d => d.SolicitudAdmision.Postulante.NumeroDocumento == numeroDocumento.ToString()))
                 {
-                    CitaAdmision = objCita.ListarTodo().Where(x => Convert.ToInt32(x.SolicitudAdmision.Postulante.NumeroDocumento) == numeroDocumento).FirstOrDefault()
-                };
-                expediente = objExpediente.Crear(expediente);
-
-                if (expediente.IdExpediente > 0)
-                    return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = true, responseText = "No existe el número de documento para crear el expediente.", }, JsonRequestBehavior.AllowGet);
+                }               
+                else if (objCita.ListarTodo().Any(x => x.FechaCita == null && Convert.ToInt32(x.SolicitudAdmision.Postulante.NumeroDocumento) == numeroDocumento))
+                {
+                    return Json(new { success = true, responseText = "No se puede crear el expediente, porque no tiene una cita registrada.", }, JsonRequestBehavior.AllowGet);
+                }
+                else if (objExpediente.ListarTodo().Any(d => d.CitaAdmision.SolicitudAdmision.Postulante.NumeroDocumento == numeroDocumento.ToString()))
+                {
+                    return Json(new { success = true, responseText = "No se puede crear el expediente, porque ya existe un expediente registrado.", }, JsonRequestBehavior.AllowGet);
+                }
                 else
-                    return Json(new { success = true, responseText = "Ocurrió un incoveniente al crear el expediente", }, JsonRequestBehavior.AllowGet);
+                {
+                    Expediente expediente = new Expediente()
+                    {
+                        CitaAdmision = objCita.ListarTodo().Where(x => Convert.ToInt32(x.SolicitudAdmision.Postulante.NumeroDocumento) == numeroDocumento).FirstOrDefault(),
+                        EstadoExpediente = new EstadoExpediente() { IdEstadoExpediente = 1 }// Estado Pendiente
+                    };
+                    expediente = objExpediente.Crear(expediente);
+
+
+                    ///////////////////////////////////////////////////////////////////////////////
+                    BResultadoEvaluacion objResultadoEvaluacion = new BResultadoEvaluacion();
+                    ResultadoEvaluacion resultadoevaluacion = new ResultadoEvaluacion()
+                    {
+                        Expediente = expediente,
+                        ResultadoPrueba = "Pendiente",
+                        TipoEvaluacion = "Pendiente",
+                        Evaluador = "Pendiente",
+                        CargoEvaluador = "Pendiente",
+                        FechaEvaluacion = "Pendiente"
+                    };
+                    objResultadoEvaluacion.Crear(resultadoevaluacion);
+
+                    BResultadoProceso objResultadoProceso = new BResultadoProceso();
+                    ResultadoProceso resultadoproceso = new ResultadoProceso()
+                    {
+                        Expediente = expediente,
+                        Resultado = "Pendiente",
+                        FechaResultado = "Pendiente"
+                    };
+                    objResultadoProceso.Crear(resultadoproceso);
+
+                    if (expediente.IdExpediente > 0)
+                        return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                    else
+                        return Json(new { success = true, responseText = "Ocurrió un incoveniente al crear el expediente.", }, JsonRequestBehavior.AllowGet);
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -103,11 +143,12 @@ namespace GAA.Web.Controllers
 
         #endregion
 
-
+        #region Ficha Expediente
         public ActionResult Ficha(int id)
         {
             try
             {
+                string uploadDir = "/Uploads";
                 BExpediente objExpediente = new BExpediente();
                 Expediente expediente = new Expediente();
                 BDocumentosExpediente objDocumentoExpediente = new BDocumentosExpediente();
@@ -134,29 +175,49 @@ namespace GAA.Web.Controllers
                 {
                     viewmodel.FechaActaNacimiento = documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionActaNacimiento = documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Observacion;
-                    viewmodel.TieneActaNacimiento = (documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneActaNacimiento = (documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathActaNacimiento = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Ruta;
                 }
 
                 if (documentosExpediente.Any(d => d.Tipo == 2))
                 {
                     viewmodel.FechaCertificadoEstudios = documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionCertificadoEstudios = documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Observacion;
-                    viewmodel.TieneCertificadoEstudios = (documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneCertificadoEstudios = (documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathCertificadoEstudios = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Ruta;
                 }
 
                 if (documentosExpediente.Any(d => d.Tipo == 3))
                 {
                     viewmodel.FechaConstanciaHomologacion = documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionConstanciaHomologacion = documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Observacion;
-                    viewmodel.TieneConstanciaHomologacion = (documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneConstanciaHomologacion = (documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathConstanciaHomologacion = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Ruta;
                 }
 
                 if (documentosExpediente.Any(d => d.Tipo == 4))
                 {
                     viewmodel.FechaCopiaDocumentacionApoderado = documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionCopiaDocumentacionApoderado = documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Observacion;
-                    viewmodel.TieneCopiaDocumentacionApoderado = (documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneCopiaDocumentacionApoderado = (documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathCopiaDocumentacionApoderado = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Ruta;
                 }
+
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                BResultadoEvaluacion objResultadoEvaluacion = new BResultadoEvaluacion();
+                ResultadoEvaluacion resultadoevaluacion = objResultadoEvaluacion.ListarTodo().Where(d => d.Expediente.IdExpediente == id).FirstOrDefault();
+                viewmodel.ResultadoPrueba = resultadoevaluacion.ResultadoPrueba;
+                viewmodel.TipoEvaluacion = resultadoevaluacion.TipoEvaluacion;
+                viewmodel.Evaluador = resultadoevaluacion.Evaluador;
+                viewmodel.CargoEvaluador = resultadoevaluacion.CargoEvaluador;
+                viewmodel.FechaEvaluacion = resultadoevaluacion.FechaEvaluacion;
+
+                BResultadoProceso objResultadoProceso = new BResultadoProceso();
+                ResultadoProceso resultadoproceso = objResultadoProceso.ListarTodo().Where(h => h.Expediente.IdExpediente == id).FirstOrDefault();
+                viewmodel.ResultadoProceso = resultadoproceso.Resultado;
+                viewmodel.FechaProceso = resultadoproceso.FechaResultado;
+                viewmodel.ObservacionesProceso = resultadoproceso.ObservacionResultado;
 
 
                 return View(viewmodel);
@@ -174,39 +235,49 @@ namespace GAA.Web.Controllers
             try
             {
                 BDocumentosExpediente objDocumentoExpediente = new BDocumentosExpediente();
+                string uploadDir = "/Uploads";
                 if (Request != null)
                 {
-                    List<DocumentosExpediente> lis = objDocumentoExpediente.ListarTodo();
-                    foreach( DocumentosExpediente item  in objDocumentoExpediente.ListarTodo().Where(s=>s.Expediente.IdExpediente==Convert.ToInt32(collection["CodExpediente"])) ){
-                        objDocumentoExpediente.Eliminar(item);
-                    }
-                    
+
                     HttpPostedFileBase upObservacionActaNacimiento = Request.Files["UpObservacionActaNacimiento"];
                     HttpPostedFileBase upObservacionCertificadoEstudios = Request.Files["UpObservacionCertificadoEstudios"];
                     HttpPostedFileBase upObservacionConstanciaHomologacion = Request.Files["UpObservacionConstanciaHomologacion"];
                     HttpPostedFileBase upObservacionCopiaDocumentacionApoderado = Request.Files["UpObservacionCopiaDocumentacionApoderado"];
 
-                    string uploadDir = "~/Uploads";
-                    BDocumentosExpediente objDocumento = new BDocumentosExpediente();
+                    string path = string.Empty;
 
                     ////////////////////////////////////////////////////////////////////
                     if ((upObservacionActaNacimiento != null) &&
                         (upObservacionActaNacimiento.ContentLength > 0)
                         && !string.IsNullOrEmpty(upObservacionActaNacimiento.FileName))
                     {
-
-                        string imagePath = Path.Combine(Server.MapPath(uploadDir), collection["CodExpediente"] + upObservacionActaNacimiento.FileName);
+                        path = new Random().Next(1, 100).ToString() + upObservacionActaNacimiento.FileName;
+                        string imagePath = Path.Combine(Server.MapPath(uploadDir), path);
                         upObservacionActaNacimiento.SaveAs(imagePath);
 
-                        DocumentosExpediente documento = new DocumentosExpediente()
+                        DocumentosExpediente documentoCrear = new DocumentosExpediente()
                         {
                             Expediente = new Expediente() { IdExpediente = Convert.ToInt32(collection["CodExpediente"]) },
                             FechaDocumento = DateTime.Now,
                             Observacion = collection["ObservacionActaNacimiento"],
-                            Ruta = imagePath,
+                            Ruta = path,
                             Tipo = 1
                         };
-                        objDocumento.Crear(documento);
+
+                        if (objDocumentoExpediente.ListarTodo().Any(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 1))
+                        {
+                            DocumentosExpediente documentoModificar = objDocumentoExpediente.ListarTodo().Where(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 1).FirstOrDefault();
+                            documentoModificar.FechaDocumento = DateTime.Now;
+                            documentoModificar.Observacion = collection["ObservacionActaNacimiento"];
+                            documentoModificar.Ruta = path;
+                            objDocumentoExpediente.Modificar(documentoModificar);
+                        }
+                        else
+                        {
+                            objDocumentoExpediente.Crear(documentoCrear);
+                        }
+
+                        path = string.Empty;
                     }
 
 
@@ -215,19 +286,33 @@ namespace GAA.Web.Controllers
                         (upObservacionCertificadoEstudios.ContentLength > 0)
                         && !string.IsNullOrEmpty(upObservacionCertificadoEstudios.FileName))
                     {
-
-                        string imagePath = Path.Combine(Server.MapPath(uploadDir), collection["CodExpediente"] + upObservacionCertificadoEstudios.FileName);
+                        path = new Random().Next(1, 100).ToString() + upObservacionCertificadoEstudios.FileName;
+                        string imagePath = Path.Combine(Server.MapPath(uploadDir), path);
                         upObservacionCertificadoEstudios.SaveAs(imagePath);
 
-                        DocumentosExpediente documento = new DocumentosExpediente()
+                        DocumentosExpediente documentoCrear = new DocumentosExpediente()
                         {
                             Expediente = new Expediente() { IdExpediente = Convert.ToInt32(collection["CodExpediente"]) },
                             FechaDocumento = DateTime.Now,
                             Observacion = collection["ObservacionCertificadoEstudios"],
-                            Ruta = imagePath,
+                            Ruta = path,
                             Tipo = 2
                         };
-                        objDocumento.Crear(documento);
+
+                        if (objDocumentoExpediente.ListarTodo().Any(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 2))
+                        {
+                            DocumentosExpediente documentoModificar = objDocumentoExpediente.ListarTodo().Where(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 2).FirstOrDefault();
+                            documentoModificar.FechaDocumento = DateTime.Now;
+                            documentoModificar.Observacion = collection["ObservacionCertificadoEstudios"];
+                            documentoModificar.Ruta = path;
+                            objDocumentoExpediente.Modificar(documentoModificar);
+                        }
+                        else
+                        {
+                            objDocumentoExpediente.Crear(documentoCrear);
+                        }
+
+                        path = string.Empty;
                     }
 
 
@@ -237,19 +322,33 @@ namespace GAA.Web.Controllers
                         (upObservacionConstanciaHomologacion.ContentLength > 0)
                         && !string.IsNullOrEmpty(upObservacionConstanciaHomologacion.FileName))
                     {
-
-                        string imagePath = Path.Combine(Server.MapPath(uploadDir), collection["CodExpediente"] + upObservacionConstanciaHomologacion.FileName);
+                        path = new Random().Next(1, 100).ToString() + upObservacionConstanciaHomologacion.FileName;
+                        string imagePath = Path.Combine(Server.MapPath(uploadDir), path);
                         upObservacionConstanciaHomologacion.SaveAs(imagePath);
 
-                        DocumentosExpediente documento = new DocumentosExpediente()
+                        DocumentosExpediente documentoCrear = new DocumentosExpediente()
                         {
                             Expediente = new Expediente() { IdExpediente = Convert.ToInt32(collection["CodExpediente"]) },
                             FechaDocumento = DateTime.Now,
                             Observacion = collection["ObservacionConstanciaHomologacion"],
-                            Ruta = imagePath,
+                            Ruta = path,
                             Tipo = 3
                         };
-                        objDocumento.Crear(documento);
+
+                        if (objDocumentoExpediente.ListarTodo().Any(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 3))
+                        {
+                            DocumentosExpediente documentoModificar = objDocumentoExpediente.ListarTodo().Where(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 3).FirstOrDefault();
+                            documentoModificar.FechaDocumento = DateTime.Now;
+                            documentoModificar.Observacion = collection["ObservacionConstanciaHomologacion"];
+                            documentoModificar.Ruta = path;
+                            objDocumentoExpediente.Modificar(documentoModificar);
+                        }
+                        else
+                        {
+                            objDocumentoExpediente.Crear(documentoCrear);
+                        }
+
+                        path = string.Empty;
                     }
 
 
@@ -260,26 +359,40 @@ namespace GAA.Web.Controllers
                         (upObservacionCopiaDocumentacionApoderado.ContentLength > 0)
                         && !string.IsNullOrEmpty(upObservacionCopiaDocumentacionApoderado.FileName))
                     {
-
-                        string imagePath = Path.Combine(Server.MapPath(uploadDir), collection["CodExpediente"] + upObservacionCopiaDocumentacionApoderado.FileName);
+                        path = new Random().Next(1, 100).ToString() + upObservacionCopiaDocumentacionApoderado.FileName;
+                        string imagePath = Path.Combine(Server.MapPath(uploadDir), path);
                         upObservacionCopiaDocumentacionApoderado.SaveAs(imagePath);
 
-                        DocumentosExpediente documento = new DocumentosExpediente()
+                        DocumentosExpediente documentoCrear = new DocumentosExpediente()
                         {
                             Expediente = new Expediente() { IdExpediente = Convert.ToInt32(collection["CodExpediente"]) },
                             FechaDocumento = DateTime.Now,
                             Observacion = collection["ObservacionCopiaDocumentacionApoderado"],
-                            Ruta = imagePath,
+                            Ruta = path,
                             Tipo = 4
                         };
-                        objDocumento.Crear(documento);
+
+                        if (objDocumentoExpediente.ListarTodo().Any(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 4))
+                        {
+                            DocumentosExpediente documentoModificar = objDocumentoExpediente.ListarTodo().Where(s => s.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"]) && s.Tipo == 4).FirstOrDefault();
+                            documentoModificar.FechaDocumento = DateTime.Now;
+                            documentoModificar.Observacion = collection["ObservacionCopiaDocumentacionApoderado"];
+                            documentoModificar.Ruta = path;
+                            objDocumentoExpediente.Modificar(documentoModificar);
+                        }
+                        else
+                        {
+                            objDocumentoExpediente.Crear(documentoCrear);
+                        }
+
+                        path = string.Empty;
                     }
                 }
 
                 //return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
 
                 ////////////////////////////////////////////////////////////////////
-                BExpediente objExpediente = new BExpediente();                
+                BExpediente objExpediente = new BExpediente();
                 Expediente expediente = new Expediente();
                 List<DocumentosExpediente> documentosExpediente = new List<DocumentosExpediente>();
                 GestionAdmisionViewModel viewmodel = new GestionAdmisionViewModel();
@@ -303,29 +416,51 @@ namespace GAA.Web.Controllers
                 {
                     viewmodel.FechaActaNacimiento = documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionActaNacimiento = documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Observacion;
-                    viewmodel.TieneActaNacimiento = (documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneActaNacimiento = (documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathActaNacimiento = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 1).FirstOrDefault().Ruta;
                 }
 
                 if (documentosExpediente.Any(d => d.Tipo == 2))
                 {
                     viewmodel.FechaCertificadoEstudios = documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionCertificadoEstudios = documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Observacion;
-                    viewmodel.TieneCertificadoEstudios = (documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneCertificadoEstudios = (documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathCertificadoEstudios = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 2).FirstOrDefault().Ruta;
                 }
 
                 if (documentosExpediente.Any(d => d.Tipo == 3))
                 {
                     viewmodel.FechaConstanciaHomologacion = documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionConstanciaHomologacion = documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Observacion;
-                    viewmodel.TieneConstanciaHomologacion = (documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneConstanciaHomologacion = (documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathConstanciaHomologacion = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 3).FirstOrDefault().Ruta;
                 }
 
                 if (documentosExpediente.Any(d => d.Tipo == 4))
                 {
                     viewmodel.FechaCopiaDocumentacionApoderado = documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().FechaDocumento.ToString("dd/MM/yyyy");
                     viewmodel.ObservacionCopiaDocumentacionApoderado = documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Observacion;
-                    viewmodel.TieneCopiaDocumentacionApoderado = (documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    //viewmodel.TieneCopiaDocumentacionApoderado = (documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Ruta != string.Empty ? true : false);
+                    viewmodel.PathCopiaDocumentacionApoderado = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + uploadDir + "/" + documentosExpediente.Where(v => v.Tipo == 4).FirstOrDefault().Ruta;
                 }
+
+
+
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                BResultadoEvaluacion objResultadoEvaluacion = new BResultadoEvaluacion();
+                ResultadoEvaluacion resultadoevaluacion = objResultadoEvaluacion.ListarTodo().Where(d => d.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"])).FirstOrDefault();
+                viewmodel.ResultadoPrueba = resultadoevaluacion.ResultadoPrueba;
+                viewmodel.TipoEvaluacion = resultadoevaluacion.TipoEvaluacion;
+                viewmodel.Evaluador = resultadoevaluacion.Evaluador;
+                viewmodel.CargoEvaluador = resultadoevaluacion.CargoEvaluador;
+                viewmodel.FechaEvaluacion = resultadoevaluacion.FechaEvaluacion;
+
+                BResultadoProceso objResultadoProceso = new BResultadoProceso();
+                ResultadoProceso resultadoproceso = objResultadoProceso.ListarTodo().Where(h => h.Expediente.IdExpediente == Convert.ToInt32(collection["CodExpediente"])).FirstOrDefault();
+                viewmodel.ResultadoProceso = resultadoproceso.Resultado;
+                viewmodel.FechaProceso = resultadoproceso.FechaResultado;
+                viewmodel.ObservacionesProceso = resultadoproceso.ObservacionResultado;
 
 
                 TempData["message"] = "Se guardó satisfactoriamente";
@@ -339,6 +474,6 @@ namespace GAA.Web.Controllers
             }
 
         }
-
+        #endregion
     }
 }

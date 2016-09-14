@@ -126,19 +126,39 @@ namespace GAA.Web.ViewModels
         
         public string FechaActaNacimiento { get; set; }
         public string ObservacionActaNacimiento { get; set; }
-        public bool TieneActaNacimiento { get; set; }      
+        //public bool TieneActaNacimiento { get; set; }
+        public string PathActaNacimiento { get; set; }      
 
         public string FechaCertificadoEstudios { get; set; }
         public string ObservacionCertificadoEstudios { get; set; }
-        public bool TieneCertificadoEstudios { get; set; }      
+        //public bool TieneCertificadoEstudios { get; set; }
+        public string PathCertificadoEstudios { get; set; }      
 
         public string FechaConstanciaHomologacion { get; set; }
         public string ObservacionConstanciaHomologacion { get; set; }
-        public bool TieneConstanciaHomologacion { get; set; }      
+        //public bool TieneConstanciaHomologacion { get; set; }
+        public string PathConstanciaHomologacion { get; set; }      
 
         public string FechaCopiaDocumentacionApoderado { get; set; }
         public string ObservacionCopiaDocumentacionApoderado { get; set; }
-        public bool TieneCopiaDocumentacionApoderado { get; set; }      
+        //public bool TieneCopiaDocumentacionApoderado { get; set; }
+        public string PathCopiaDocumentacionApoderado { get; set; }
+        #endregion
+
+        #region Resultado de evaluacion (otro caso de uso)
+        public string ResultadoPrueba { get; set; }
+        public string TipoEvaluacion { get; set; }
+        public string Evaluador { get; set; }
+        public string CargoEvaluador { get; set; }
+        public string FechaEvaluacion { get; set; } 
+        #endregion
+
+
+        #region Resultado del proceso (otro caso de uso)
+        public string ResultadoProceso { get; set; }
+        public string FechaProceso { get; set; }
+        public string ObservacionesProceso{ get; set; }
+
         #endregion
 
     }

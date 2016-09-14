@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="GAA.Entity"
+                   namespace="GAA.Entity"
+                   default-lazy="false">
+	<class name="ResultadoEvaluacion" table="GAA_ResultadoEvaluacion">
+		<id name="IdResultadoEvaluacion" column="idResultadoEvaluacion">
+			<generator class="increment" />
+		</id>
+		<many-to-one name="Expediente" column="idExpediente" />
+		<property name="ResultadoPrueba" column="resultadoPrueba" />
+		<property name="TipoEvaluacion" column="tipoEvaluacion" />
+		<property name="Evaluador" column="evaluador" />
+		<property name="CargoEvaluador" column="cargoEvaluador" />
+		<property name="FechaEvaluacion" column="fechaEvaluacion" />
+	</class>
+</hibernate-mapping>

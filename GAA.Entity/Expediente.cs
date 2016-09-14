@@ -21,5 +21,14 @@ namespace GAA.Entity
             get { return citaAdmision; }
             set { citaAdmision = value; }
         }
+
+        private EstadoExpediente estadoExpediente;
+
+        public EstadoExpediente EstadoExpediente
+        {
+            get { return estadoExpediente; }
+            set { estadoExpediente = value; }
+        }
+
     }
 }
