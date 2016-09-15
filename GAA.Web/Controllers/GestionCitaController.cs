@@ -102,15 +102,16 @@ namespace GAA.Web.Controllers
 
                 BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
                 FechaCitaAdmision fechaa = new FechaCitaAdmision();
+                var ok = objFechaCita.ListarTodo();
                 if (cita.FechaCita != null) {
                     fechaa = objFechaCita.ListarTodo().Where(f => f.FechaCita == cita.FechaCita).FirstOrDefault();
                     fechaa.Estado = 1;
                     objFechaCita.Modificar(fechaa);
                 }
-                
 
 
-                DateTime fecha = Convert.ToDateTime(collection["FechaCitaAdmision"]);
+
+                DateTime fecha = DateTime.ParseExact(collection["FechaCitaAdmision"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
                 cita.FechaCita = new DateTime(fecha.Year, fecha.Month, fecha.Day, Convert.ToInt32(collection["HoraCitaAdmision"].Substring(0, 2)), 0, 0);
                 cita.EstadoCita = new EstadoCita() { IdEstadoCita = 2 };
                 cita = objCita.Modificar(cita);
