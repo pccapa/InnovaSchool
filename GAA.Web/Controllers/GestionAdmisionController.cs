@@ -39,6 +39,31 @@ namespace GAA.Web.Controllers
                 return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult VerificarPeriodoPostulacion()
+        {
+            try
+            {
+                BFechaCitaAdmision objFechaCita = new BFechaCitaAdmision();
+
+                DateTime fechainicio = objFechaCita.ListarTodo().Min(g => g.FechaCita).AddDays(-22).Date;
+                DateTime fechafin = objFechaCita.ListarTodo().Max(g => g.FechaCita).AddDays(-22).Date;
+
+
+                if (fechainicio <= DateTime.Now.Date && fechafin >= DateTime.Now.Date)
+                    return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = true, responseText = "No hay periodo de postulación vigente" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         #endregion
 
         #region Crear

@@ -19,7 +19,8 @@
 
             $('#btnCrearExpediente').click(function () {
                 if ($('#txtDocumento').val() == '') {
-                    alert('Ingrese un número de documento.');
+                    document.getElementById('msjMensaje').innerHTML = "Ingrese un número de documento.";
+                    $('#myModal').modal({ backdrop: 'static', keyboard: false })
                 }
                 else {
                     $.ajax({
@@ -29,10 +30,14 @@
                         data: { "numeroDocumento": $('#txtDocumento').val() },
                         success: function (response) {
                             if (response != null && response.success && response.responseText == 'OK') {
-                                alert("Se creó el expediente satisfactoriamente");
-                                ListarExpedientes();
+                                document.getElementById('msjMensaje').innerHTML = "Se creó el expediente satisfactoriamente";
+                                $('#btCerrarModal').click(function () {
+                                    ListarExpedientes();
+                                });
+                                $('#myModal').modal({ backdrop: 'static', keyboard: false })                                
                             } else {
-                                alert(response.responseText);
+                                document.getElementById('msjMensaje').innerHTML = response.responseText;
+                                $('#myModal').modal({ backdrop: 'static', keyboard: false })
                             }
                         }
                     });
@@ -59,7 +64,8 @@
                     success: function (response) {
                         if (response != null && response.success && response.responseText == 'OK') {
                             if (response.cadena == '') {
-                                alert('No se encontró registros');
+                                document.getElementById('msjMensaje').innerHTML = "No se encontró registros";
+                                $('#myModal').modal({ backdrop: 'static', keyboard: false })                                
                                 $('#btnCrearExpediente').prop('disabled', true);
                             }
                             else {
@@ -72,7 +78,8 @@
                                 }
                             }
                         } else {
-                            alert(response.responseText);
+                            document.getElementById('msjMensaje').innerHTML = response.responseText;
+                            $('#myModal').modal({ backdrop: 'static', keyboard: false })
                             $('#btnCrearExpediente').prop('disabled', true);
                         }
                     }
@@ -117,5 +124,24 @@
                 </table>
             </div>
         </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Innova School</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="msjMensaje"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </fieldset>
 }

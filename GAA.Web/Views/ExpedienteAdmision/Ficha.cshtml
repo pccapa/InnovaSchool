@@ -28,7 +28,8 @@
         @if (TempData["message"] != null)
         {
             <script type="text/javascript">
-                alert(@Html.Raw(Json.Encode(TempData["message"])));
+                document.getElementById('msjMensaje').innerHTML = @Html.Raw(Json.Encode(TempData["message"]));
+                $('#myModal').modal({ backdrop: 'static', keyboard: false })
             </script>
         }
         
@@ -264,5 +265,25 @@
                 </div>
             </div>
         </div>       
+
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Innova School</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="msjMensaje"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </fieldset>
 }

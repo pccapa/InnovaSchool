@@ -11,7 +11,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            
+
             $("#FechaNacimientoPostulante").attr('readOnly', 'true');
 
             $('#btnGuardar').click(function () {
@@ -24,14 +24,20 @@
                         dataType: 'json',
                         success: function (response) {
                             if (response != null && response.success && response.responseText == 'OK') {
-                                alert("Se actualizó el registro satisfacoriamente");
-                                window.location.href = '/GestionAdmision/Consulta/';
+                                document.getElementById('msjMensaje').innerHTML = 'Se actualizó el registro satisfacoriamente';
+                                $('#btCerrarModal').click(function () {
+                                    window.location.href = '/GestionAdmision/Consulta/';
+                                });
                             } else {
-                                alert(response.responseText);
+                                document.getElementById('msjMensaje').innerHTML = response.responseText;
                             }
                         }
                     });
                 }
+                else {
+                    document.getElementById('msjMensaje').innerHTML = 'Verifique los datos';
+                }
+                    
             });
 
 
@@ -76,6 +82,12 @@
             });
 
 
+
+
+
+
+
+            //$('#btnGuardar').modal({ backdrop: 'static', keyboard: false })
 
 
         });
@@ -196,7 +208,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.FechaNacimientoPostulante, "Fecha de Nacimiento (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.FechaNacimientoPostulante,  new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.FechaNacimientoPostulante, new { htmlAttributes = new { @class = "form-control" } })
                             </td>
                         </tr>
                         <tr>
@@ -215,14 +227,14 @@
                         </tr>
                         <tr>
                             <td>
-                                @Html.LabelFor(model => model.CodDepartamento, "Departamento (*)", htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.CodDepartamento, "Provincia (*)", htmlAttributes: new { @class = "control-label" })
                                 @Html.DropDownList("CodDepartamento", (SelectList)ViewBag.ListaDepartamento, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodDepartamento, "", new { @class = "text-danger" })
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                @Html.LabelFor(model => model.CodCiudad, "Ciudad (*)", htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.CodCiudad, "Distrito (*)", htmlAttributes: new { @class = "control-label" })
                                 @Html.DropDownListFor(model => model.CodCiudad, (SelectList)ViewBag.ListaCiudad, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodCiudad, "", new { @class = "text-danger" })
                             </td>
@@ -258,12 +270,29 @@
             <b>(*) Campos Obligatorios</b>
             <br />
             <div class="btn-group">
-                <input type="button" value="Guardar" id="btnGuardar" class="btn-primary" />
+                <input type="button" value="Guardar" id="btnGuardar" class="btn-primary" data-toggle="modal" data-target="#myModal" />
                 <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
             </div>
         </div>
-        <script>            
-        </script>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Innova School</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="msjMensaje"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </fieldset>
 }
 
