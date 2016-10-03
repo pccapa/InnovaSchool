@@ -86,12 +86,72 @@
 
 
 
-
+            ChangeDocumentoApoderado1($("#CodTipoDocumentoApoderado option:selected").val());
+            ChangeDocumentoPostulante1($("#CodTipoDocumentoPostulante option:selected").val());
+      
 
             //$('#btnGuardar').modal({ backdrop: 'static', keyboard: false })
 
 
         });
+
+
+        function ChangeDocumentoApoderado1(valor) {
+            switch (valor) {
+                case '1':
+                    $('#NumDocumentoApoderado').prop('maxlength', '8');
+                    break;
+                case '2':
+                    $('#NumDocumentoApoderado').prop('maxlength', '12');
+                    break;
+            }
+        }
+
+
+
+
+        function ChangeDocumentoPostulante1(valor) {
+            switch (valor) {
+                case '1':
+                    $('#NumDocumentoPostulante').prop('maxlength', '8');
+                    break;
+                case '2':
+                    $('#NumDocumentoPostulante').prop('maxlength', '12');
+                    break;
+            }
+        }
+
+
+        /////////////////////////////
+
+
+        function ChangeDocumentoApoderado(valor) {
+            $('#NumDocumentoApoderado').val('');
+            switch (valor) {
+                case '1':
+                    $('#NumDocumentoApoderado').prop('maxlength', '8');
+                    break;
+                case '2':
+                    $('#NumDocumentoApoderado').prop('maxlength', '12');
+                    break;
+            }
+        }
+
+
+
+        function ChangeDocumentoPostulante(valor) {
+            $('#NumDocumentoPostulante').val('');
+            switch (valor) {
+                case '1':
+                    $('#NumDocumentoPostulante').prop('maxlength', '8');
+                    break;
+                case '2':
+                    $('#NumDocumentoPostulante').prop('maxlength', '12');
+                    break;
+            }
+        }
+
+
 
     </script>
 
@@ -122,7 +182,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodTipoDocumentoApoderado, "Tipo Documento Apoderado (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodTipoDocumentoApoderado", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
+                                @Html.DropDownList("CodTipoDocumentoApoderado", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "form-control", @onchange = "ChangeDocumentoApoderado(this.value);" })
                                 @Html.ValidationMessageFor(model => model.CodTipoDocumentoApoderado, "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -195,7 +255,7 @@
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.CodTipoDocumentoPostulante, "Tipo Documento Postulante (*)", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("CodTipoDocumentoPostulante", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
+                                @Html.DropDownList("CodTipoDocumentoPostulante", (SelectList)ViewBag.ListaTipoDocumento, "-Seleccione-", htmlAttributes: new { @class = "form-control", @onchange = "ChangeDocumentoPostulante(this.value);"})
                                 @Html.ValidationMessageFor(model => model.CodTipoDocumentoPostulante, "", new { @class = "text-danger" })
                             </td>
                         </tr>
