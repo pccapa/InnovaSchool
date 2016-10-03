@@ -93,7 +93,7 @@ namespace GAA.Web.Controllers
                 }
                 else if (objExpediente.ListarTodo().Any(d => d.CitaAdmision.SolicitudAdmision.Postulante.NumeroDocumento == numeroDocumento.ToString()))
                 {
-                    return Json(new { success = true, responseText = "No se puede crear el expediente, porque ya existe un expediente registrado.", }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = true, responseText = "No se puede crear el expediente porque ya existe uno activo.", }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

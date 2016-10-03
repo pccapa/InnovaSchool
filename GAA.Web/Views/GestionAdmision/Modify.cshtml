@@ -15,6 +15,7 @@
             $("#FechaNacimientoPostulante").attr('readOnly', 'true');
 
             $('#btnGuardar').click(function () {
+                document.getElementById('msjMensaje').innerHTML = '';
                 var form = $("#onlineform");
                 if (form.valid()) {
                     $.ajax({
@@ -24,7 +25,7 @@
                         dataType: 'json',
                         success: function (response) {
                             if (response != null && response.success && response.responseText == 'OK') {
-                                document.getElementById('msjMensaje').innerHTML = 'Se actualizó el registro satisfacoriamente';
+                                document.getElementById('msjMensaje').innerHTML = 'Se actualizó el registro satisfactoriamente';
                                 $('#btCerrarModal').click(function () {
                                     window.location.href = '/GestionAdmision/Consulta/';
                                 });
@@ -162,7 +163,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @Html.LabelFor(model => model.CodVinculo, "Vinculo Postulante (*)", htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.CodVinculo, "Vínculo Postulante (*)", htmlAttributes: new { @class = "control-label" })
                                 @Html.DropDownList("CodVinculo", (SelectList)ViewBag.ListaApoderadoVinculo, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodVinculo, "", new { @class = "text-danger" })
                             </td>
@@ -220,7 +221,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @Html.LabelFor(model => model.CodGenero, "Genero (*)", htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.CodGenero, "Género (*)", htmlAttributes: new { @class = "control-label" })
                                 @Html.DropDownList("CodGenero", (IEnumerable<SelectListItem>)ViewBag.ListaGenero, "-Seleccione-", htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CodGenero, "", new { @class = "text-danger" })
                             </td>

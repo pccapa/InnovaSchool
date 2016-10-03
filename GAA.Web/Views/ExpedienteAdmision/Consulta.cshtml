@@ -12,7 +12,18 @@
         $(document).ready(function () {
 
             $('#btnBuscar').click(function () {
+                if ($('#txtDocumento').val() == '') {
+                    $('#tbExpedientes tbody').empty();                    
+                    $('#spMensajeValidacion').css('display', 'block');
+                    document.getElementById('msjMensaje').innerHTML = 'Verifique los datos';
+                    $('#myModal').modal({ backdrop: 'static', keyboard: false })
+                }
+                else {
+                    $('#spMensajeValidacion').css('display', 'none');
                 ListarExpedientes();
+                }
+                
+               
             });
 
 
@@ -66,15 +77,17 @@
                             if (response.cadena == '') {
                                 document.getElementById('msjMensaje').innerHTML = "No se encontró registros";
                                 $('#myModal').modal({ backdrop: 'static', keyboard: false })                                
-                                $('#btnCrearExpediente').prop('disabled', true);
+                                //$('#btnCrearExpediente').prop('disabled', true);
                             }
                             else {
                                 $('#tbExpedientes tbody').append(response.cadena);
                                 if ($("#tbExpedientes  tbody  tr").length > 0) {
-                                    $('#btnCrearExpediente').prop('disabled', false);
+                                    $('#btnCrearExpediente').prop('disabled', false);                                    
                                 }
                                 else {
-                                    $('#btnCrearExpediente').prop('disabled', true);
+                                    $('#btnCrearExpediente').prop('disabled', true);//pablo                                    
+                                    document.getElementById('msjMensaje').innerHTML = "Debe buscar un expediente ingresando el DNI.";
+                                    $('#myModal').modal({ backdrop: 'static', keyboard: false })
                                 }
                             }
                         } else {
@@ -101,12 +114,14 @@
             <div class="panel-body">
                 <br />
                 <div class="btn-group">
-                    <input type="button" value="Crear Expediente" id="btnCrearExpediente" disabled="disabled" class="btn-primary" />
+                    <input type="button" value="Crear Expediente" id="btnCrearExpediente" class="btn-primary" />
                     <input type="button" value="Salir" id="btnSalir" class="btn-primary" />
                 </div>
                 <p>
                     <span class="control-label">N° de Documento de identidad del postulante</span> <br />
-                    <input type="number" min="0" max="9" id="txtDocumento" class="form-control" maxlength="9" /><br />
+                    <input type="number" min="0" max="9" id="txtDocumento" class="form-control" maxlength="9" />
+                    <span id="spMensajeValidacion" style="color:red;display:none"  >(*) Ingrese un Nº Documento</span>
+                    <br />
                     <input type="button" value="Buscar" id="btnBuscar" class="btn-primary" />
                 </p>
                 <table id="tbExpedientes" class="table-bordered table-hover" style="width:100%;text-align:center">

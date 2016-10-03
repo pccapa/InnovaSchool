@@ -122,6 +122,10 @@ namespace GAA.Web.Controllers
                 {
                     return Json(new { success = true, responseText = "Ya existe un postulante con los mismos nombres. No se puede crear la solicitud." }, JsonRequestBehavior.AllowGet);
                 }
+                else if (DateTime.ParseExact(collection["FechaNacimientoPostulante"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date < DateTime.Now.AddYears(-20).Date)
+                {
+                    return Json(new { success = true, responseText = "Edad del postulante no es admitida." }, JsonRequestBehavior.AllowGet);
+                }
                 else
                 {
                     Apoderado apoderado = new Apoderado()
@@ -275,6 +279,10 @@ namespace GAA.Web.Controllers
                 else if (objPostulante.ListarTodo().Any(v => v.IdPostulante != Convert.ToInt32(collection["CodPostulante"]) && v.Nombre == collection["NombresPostulante"] && v.Apellido == collection["ApellidosPostulante"]))
                 {
                     return Json(new { success = true, responseText = "Ya existe un postulante con los mismos nombres. No se puede crear la solicitud." }, JsonRequestBehavior.AllowGet);
+                }
+                else if (DateTime.ParseExact(collection["FechaNacimientoPostulante"], "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date < DateTime.Now.AddYears(-20).Date)
+                {
+                    return Json(new { success = true, responseText = "Edad del postulante no es admitida." }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
